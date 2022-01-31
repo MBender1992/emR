@@ -13,6 +13,7 @@ cox_table(
   footnote = NULL,
   printHTML = TRUE,
   univariate = TRUE,
+  weights = NULL,
   ...
 )
 }
@@ -34,6 +35,8 @@ or censoring.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 cox regression is printed. Default is TRUE.}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{...}{additional arguments to be passed on to \code{cox_output}}
 }

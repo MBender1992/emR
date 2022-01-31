@@ -22,6 +22,7 @@ survplot_eumelareg(
   plot.margin.left = 20,
   plot.axes.text.size = 12,
   plot.axes.title.size = 12,
+  weights = NULL,
   risk.table.width = 0.92,
   risk.table.title = NULL,
   risk.table.title.size = 12,
@@ -73,6 +74,8 @@ or censoring.}
 \item{plot.axes.text.size}{text size of x-axis and y-axis text.}
 
 \item{plot.axes.title.size}{text size of x-axis and y-axis titles.}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{risk.table.width}{relative width of the risk table.}
 

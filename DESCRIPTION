@@ -1,6 +1,6 @@
 Package: emR
 Title: Dictionary for EuMelaReg functions (analysis of clinical studies)
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Marc",
            family = "Bender",
@@ -22,7 +22,7 @@ Imports:
     htmlTable,
     insight,
     lubridate,
-    mice,
+    mice (>= 3.14.0),
     networkD3,
     plotROC,
     pROC,

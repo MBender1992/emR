@@ -10,12 +10,13 @@ forestplot_meta_eumelareg(
   status,
   vars,
   meta.group,
-  univariate = FALSE,
+  univariate = TRUE,
+  weights = NULL,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
   point.size = 3,
-  fontsize = 0.7,
+  fontsize = 0.8,
   line.size = 0.7,
   vjust_text = 1.2,
   noDigits = 2,
@@ -36,6 +37,8 @@ or censoring.}
 \item{meta.group}{variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{main}{title of the plot.}
 

@@ -11,6 +11,7 @@ outcome_table_survival(
   surv_names,
   var,
   bestres = NULL,
+  weights = NULL,
   ORR = NULL,
   DCR = NULL,
   statistics = TRUE,
@@ -31,6 +32,8 @@ outcome_table_survival(
 \item{var}{Variable tested for Influence on outcome}
 
 \item{bestres}{column containing data for best response}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{ORR}{column containing data for over all response rate}
 

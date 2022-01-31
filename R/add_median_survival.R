@@ -15,18 +15,21 @@
 #' indicating censored data and 1 indicating event.
 #' @param var Variable tested for Influence on outcome.
 #' @param round rounds the results to the specified number of decimal places (default 1)
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @export
 
+add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE, weights = NULL){
 
-add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE){
-  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
+  weights <- if(!is.null(weights)) data[[weights]]
+
+  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
   surv_med <- surv_median(fit)
   pval <- ifelse(surv_pvalue(fit)$pval < 0.0001, "< 0.0001", round(surv_pvalue(fit)$pval, 3))
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
 
-  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data)
+  fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights)
   surv_med <- surv_median(fit)
   tmp <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
@@ -42,4 +45,3 @@ add_median_survival <- function(data, time, status, var, round = 1, statistics =
   colnames(res) <- "Median (95% CI)"
   return(res)
 }
-

@@ -4,7 +4,15 @@
 \alias{add_median_survival}
 \title{Calculate median survival time}
 \usage{
-add_median_survival(data, time, status, var, round = 1, statistics = TRUE)
+add_median_survival(
+  data,
+  time,
+  status,
+  var,
+  round = 1,
+  statistics = TRUE,
+  weights = NULL
+)
 }
 \arguments{
 \item{data}{data.frame or data.table containing survival data.}
@@ -20,6 +28,8 @@ indicating censored data and 1 indicating event.}
 \item{round}{rounds the results to the specified number of decimal places (default 1)}
 
 \item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 }
 \description{
 This function fits a survival curve for each subgroup defined by var and extracts the median survival times.

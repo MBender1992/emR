@@ -21,12 +21,14 @@
 #' Specify if full model or backwards selection model should be used for multivariate cox regression.
 #' @param p.thres pvalue threshold for backwards selection model.
 #' @param niter number of iterations for backwards selection model.
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param output Defines the output object of the function.  Default is \"table\". Another possible option is \"fit\" to return a coxph object.
 #' @export
 
+cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "table",  modeltype = "full", p.thres = 0.1, niter = 10, weights = NULL){
 
 
-cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "table",  modeltype = "full", p.thres = 0.1, niter = 10){
+  weights <- if(!is.null(weights))data[[weights]]
 
   if (length(vars) > 1) {
     vars_input <- paste(vars, collapse = " + ")
@@ -35,7 +37,7 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "tab
   }
 
   formula <- paste("Surv(",time,", ", status,") ~ ", vars_input, sep = "")
-  fit_cox <- coxph(as.formula(formula), data = data)
+  fit_cox <- coxph(as.formula(formula), data = data, weights = weights)
   res_cox <- summary(fit_cox)
   res_ci <- res_cox$conf.int
   names <- rownames(res_ci)
@@ -55,7 +57,7 @@ cox_output <- function(data, time, status, vars, fixed.var = NULL, output = "tab
 
 
         formula <- paste("Surv(",time,", ", status,") ~ ", vars_input, sep = "")
-        fit_cox <- coxph(as.formula(formula), data = data)
+        fit_cox <- coxph(as.formula(formula), data = data, weights = weights)
         res_cox <- summary(fit_cox)
         res_ci <- res_cox$conf.int
         names <- rownames(res_ci)

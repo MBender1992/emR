@@ -10,29 +10,48 @@
 #' @param meta.group variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).
 #' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 #' cox regression is printed. Default is FALSE.
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param ... additional arguments passed on to coxph
 #' @export
 
-coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, univariate = FALSE, ...){
-  res <- lapply(1:length(levels(data[[var]])), function(x){
+coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weights = NULL, univariate = FALSE, ...){
 
-    if(univariate == FALSE){
-      vars_coxph <- c(vars[vars != var], meta.group)
-      vars_input <- paste(vars_coxph, collapse = " + ")
-    } else {
-      vars_input <- meta.group
-    }
+  vars_input <- NULL
 
-    dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
-    fit <- coxph(as.formula(paste("Surv(", time,", ", status,") ~ ", vars_input, sep = "")), data = dat, ...)
+  if(!is.factor(data[[meta.group]])) stop("Grouping variable has to be a factor.")
+  if(length(levels(data[[meta.group]])) != 2) stop("Grouping factor must have exactly two levels")
+
+  if(!is.numeric(data[[var]])){
+    res <- lapply(1:length(levels(data[[var]])), function(x) {
+      if (univariate == FALSE) {
+        vars_coxph <- c(vars[vars != var], meta.group)
+        vars_input <- paste(vars_coxph, collapse = " + ")
+      }
+      else {
+        vars_input <- meta.group
+      }
+      dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
+      fit <- coxph(as.formula(paste("Surv(", time, ", ",
+                                    status, ") ~ ", vars_input, sep = "")),
+                   data = dat, weights = dat[[weights]])
+      df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
+      df$var <- var
+      df$level <- levels(data[[var]])[x]
+      df$N <- dim(dat)[1]
+      df
+    })
+    return(res)
+  } else {
+    dat <- data
+    fit <- coxph(as.formula(paste("Surv(", time, ", ",
+                                  status, ") ~ ", vars_input, sep = "")),
+                 data = dat)
     df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
     df$var <- var
-    df$level <- levels(data[[var]])[x]
+    df$level <- ""
     df$N <- dim(dat)[1]
     df
-
-  })
-  return(res)
+  }
 }
 
 

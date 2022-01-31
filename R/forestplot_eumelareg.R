@@ -12,8 +12,13 @@
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
+# univariate in ppt
+# Abzisse ebenfalls gleiche Fontsize
+# CIs cutten
+# ppt updaten mit der Fontsize
+
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.7,line.size = 0.7, vjust_text = 1.2,
+                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.8,line.size = 0.7, vjust_text = 1.2,
                                   refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <-  NULL

@@ -11,6 +11,7 @@ coxph_meta_analysis(
   vars,
   var,
   meta.group,
+  weights = NULL,
   univariate = FALSE,
   ...
 )
@@ -28,6 +29,8 @@ or censoring.}
 \item{var}{grouping variable}
 
 \item{meta.group}{variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 cox regression is printed. Default is FALSE.}

@@ -12,6 +12,7 @@
 #' @param ... additional arguments to be passed on to coxph function
 #' @export
 
+
 mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
   weights_ate <- NULL
 
@@ -42,7 +43,7 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
       }
     })
     if(!is.null(prop.var)) weights_ate <- ate_weights(tmp, vars, prop.var = prop.var)
-    fit <- coxph(as.formula(paste("Surv(",time, ", ", status,") ~ ", vars_input, sep = "")), weights = weights_ate, data = tmp, ...)
+    fit <- coxph(as.formula(paste("Surv(",time, ", ", status,") ~ ", vars_input, sep = "")), weights = weights_ate, data = tmp)
     list(allTerms = allTerms, fit = fit)
   })
 
@@ -51,7 +52,7 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
   n <- nested_list_mean(allTerms_ls, vars)
 
   # pool results from coxph function
-  estimates <- lapply(1:m, function(x){fitm[[x]]$fit})
+  estimates <- lapply(1:m, function(x) fitm[[x]]$fit)
   res <- summary(pool(estimates), conf.int = TRUE)
   res$df <- NULL
   colnames(res) <- c("term", "estimate", "std.error", "statistic", "p.value", "conf.low", "conf.high")
@@ -61,7 +62,6 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
   list(fit = res, nfit = n)
 
 }
-
 
 
 
