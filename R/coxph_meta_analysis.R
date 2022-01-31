@@ -10,10 +10,13 @@
 #' @param meta.group variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).
 #' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 #' cox regression is printed. Default is FALSE.
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param ... additional arguments passed on to coxph
 #' @export
 
-coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, univariate = FALSE, ...){
+coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weights = NULL, univariate = FALSE, ...){
+
+  vars_input <- NULL
 
   if(!is.factor(data[[meta.group]])) stop("Grouping variable has to be a factor.")
   if(length(levels(data[[meta.group]])) != 2) stop("Grouping factor must have exactly two levels")
@@ -30,7 +33,7 @@ coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, univa
       dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
       fit <- coxph(as.formula(paste("Surv(", time, ", ",
                                     status, ") ~ ", vars_input, sep = "")),
-                   data = dat)
+                   data = dat, weights = dat[[weights]])
       df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
       df$var <- var
       df$level <- levels(data[[var]])[x]

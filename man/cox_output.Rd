@@ -13,7 +13,8 @@ cox_output(
   output = "table",
   modeltype = "full",
   p.thres = 0.1,
-  niter = 10
+  niter = 10,
+  weights = NULL
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ Specify if full model or backwards selection model should be used for multivaria
 \item{p.thres}{pvalue threshold for backwards selection model.}
 
 \item{niter}{number of iterations for backwards selection model.}
+
+\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 }
 \description{
 This function calculates a univariate cox regression with the \code{coxph} function from the \code{survival}

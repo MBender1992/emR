@@ -12,19 +12,20 @@
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param point.size Size of mean points.
 #' @param line.size Size of errorbar line.
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
-forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE,
+forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL,
                                        main = "Hazard ratio for disease progression or death (95% CI)",
                                        y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point.size = 3,
                                        fontsize = 0.8, line.size = 0.7, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
-  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time,
+  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, weights = weights,
                status = status, vars = vars, meta.group = meta.group,
                univariate = univariate)
   toShow <- lapply(1:length(ls), function(x) {
@@ -63,7 +64,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
   rangeplot[2] <- rangeplot[2] + 0.15 * diff(rangeb)
   if (!is.null(ylim)) {
     rangeplot <- log(ylim)
-    if (any(1.3*log(tail(breaks, n = 1)) < toShowExpClean$conf.high)) message("Some upper confidence intervals have been cut in favor of better display.")
+    if (any(1.3*log(utils::tail(breaks, n = 1)) < toShowExpClean$conf.high)) message("Some upper confidence intervals have been cut in favor of better display.")
     if (any(1.3*log(breaks[1]) >  toShowExpClean$conf.low)) message("Some lower confidence intervals have been cut in favor of better display.")
     toShowExpClean$estimate <- ifelse(toShowExpClean$estimate < log(ylim[1]), NA, toShowExpClean$estimate)
     toShowExpClean$conf.high <- ifelse(toShowExpClean$estimate < log(ylim[1]), NA, toShowExpClean$conf.high)

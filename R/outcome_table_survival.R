@@ -10,6 +10,7 @@
 #' @param bestres column containing data for best response
 #' @param ORR column containing data for over all response rate
 #' @param DCR column containing data for disease control rate
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param footnote add footnote
 #' @param font font style for the table
 #' @param statistics Logical value. If TRUE pvalue is printed. Default is TRUE. Default test statistics are wilcoxon (or anova if n > 2)
@@ -17,14 +18,14 @@
 #' for numerical data and fisher exact test for categorical data.
 #' @export
 
-outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL,
+outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, weights = NULL,
                                    ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri", ...){
 
   input <- data.frame(time = time,
                       status = status,
                       rownames = surv_names)
 
-  tmp <- mapply(add_median_survival, time = input[,1], status = input[,2], MoreArgs = list(data = data, var = var, statistics = statistics))
+  tmp <- mapply(add_median_survival, time = input[,1], status = input[,2], MoreArgs = list(data = data, var = var, statistics = statistics, weights = weights))
   med_surv <- t(rbind.data.frame(tmp))
   if(statistics == TRUE){
     colnames(med_surv) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")

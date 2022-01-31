@@ -12,7 +12,7 @@ forestplot_eumelareg(
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
   point.size = 3,
-  fontsize = 0.7,
+  fontsize = 0.8,
   line.size = 0.7,
   vjust_text = 1.2,
   refLabel = "reference",

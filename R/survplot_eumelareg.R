@@ -33,6 +33,7 @@
 #' @param legend.title name of legend title.
 #' @param pval.coord coords of pvalue within plot.
 #' @param pval.size size of pvalue within plot
+#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
 #' @export
 
@@ -42,7 +43,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
                                 ggtheme = theme_eumelareg_surv_plot(), tables.theme = theme_eumelareg_surv_table(),
                                 plot.width = 0.838, plot.height = 0.7, plot.margin.left = 20,
-                                plot.axes.text.size =12, plot.axes.title.size = 12,
+                                plot.axes.text.size =12, plot.axes.title.size = 12, weights = NULL,
                                 risk.table.width = 0.92, risk.table.title = NULL,
                                 risk.table.title.size = 12, risk.table.text.size = 12,
                                 legend.position = "top",legend.title = NULL, legend.labs = NULL, legend.size = 12,
@@ -74,9 +75,9 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   }
 
   ## fit survival
-  if(!is.null(var)){fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data)
+  if(!is.null(var)){fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
   } else {
-    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data)
+    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights)
     pval <- FALSE
   }
 
