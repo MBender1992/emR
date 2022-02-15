@@ -12,9 +12,8 @@
 #' @param ... additional arguments to be passed on to coxph function
 #' @export
 
-
 mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
-  weights_ate <- NULL
+  weights.ate <- NULL
 
   # define data and variables
   dat <- as.data.frame(data)
@@ -28,7 +27,7 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
 
   # calculate coxph and frequency of factor levels for each iteration of the multiple imputation
   fitm <- lapply(1:m, function(x){
-    tmp <- imp_comp[imp_comp$.imp == x,]
+    tmp <- imp_comp[imp_comp$.imp ==x,]
     terms <- as.character(utils::tail(data.frame(rbind(lapply(data, class))[, vars]), n = 1))
     names(terms) <- vars
     allTerms <- lapply(seq_along(terms), function(i) {
@@ -42,8 +41,8 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
                    pos = 1)
       }
     })
-    if(!is.null(prop.var)) weights_ate <- ate_weights(tmp, vars, prop.var = prop.var)
-    fit <- coxph(as.formula(paste("Surv(",time, ", ", status,") ~ ", vars_input, sep = "")), weights = weights_ate, data = tmp)
+    if(!is.null(prop.var)) tmp$weights.ate <- ate_weights(tmp, vars, prop.var = prop.var)
+    fit <- coxph(as.formula(paste("Surv(",time, ", ", status,") ~ ", vars_input, sep = "")), weights = weights.ate, data = tmp)
     list(allTerms = allTerms, fit = fit)
   })
 
@@ -60,14 +59,7 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
 
   # return results
   list(fit = res, nfit = n)
-
 }
-
-
-
-
-
-
 
 
 

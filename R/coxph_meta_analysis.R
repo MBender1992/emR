@@ -30,29 +30,31 @@ coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weigh
       else {
         vars_input <- meta.group
       }
-      dat <- data[eval(parse(text = var)) == levels(data[[var]])[x]]
+      dat <- data[data[[var]] == levels(data[[var]])[x],]
       fit <- coxph(as.formula(paste("Surv(", time, ", ",
                                     status, ") ~ ", vars_input, sep = "")),
-                   data = dat, weights = dat[[weights]])
+                   data = dat, weights = if(!is.null(weights)) dat[[weights]])
       df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
       df$var <- var
       df$level <- levels(data[[var]])[x]
       df$N <- dim(dat)[1]
       df
     })
-    return(res)
+   return(res)
   } else {
     dat <- data
     fit <- coxph(as.formula(paste("Surv(", time, ", ",
                                   status, ") ~ ", vars_input, sep = "")),
-                 data = dat)
+                 data = dat, weights = if(!is.null(weights)) dat[[weights]])
     df <- as.data.frame(broom::tidy(fit, conf.int = TRUE))
     df$var <- var
     df$level <- ""
     df$N <- dim(dat)[1]
     df
+
   }
 }
+
 
 
 

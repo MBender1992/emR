@@ -7,15 +7,19 @@
 #' @param prop.var variable for which propensity scores should be calculated
 #' @export
 
+data <- dat_coxph
+prop.var <- "TRT1GR"
+
 ate_weights <- function(data, vars, prop.var){
   data <- as.data.frame(data)
   vars <- vars[!vars %in% prop.var]
   vars_input <- paste(vars, collapse = " + ")
   formula <- as.formula(paste(prop.var,"~", vars_input, sep = ""))
   ps_model <- glm(formula, family = binomial, data = data)
-  pscore <- ps_model$fitted.values
   data$propensityScore <- predict(ps_model, type = "response")
-  ifelse((data[[prop.var]] == levels(data[[prop.var]])[2]),(1/data$propensityScore), (1/(1-data$propensityScore)))
+ ifelse((data[[prop.var]] == levels(data[[prop.var]])[2]),(1/data$propensityScore), (1/(1-data$propensityScore)))
 }
+
+
 
 
