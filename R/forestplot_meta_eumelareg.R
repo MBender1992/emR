@@ -69,7 +69,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
     toShowExpClean$estimate <- ifelse(toShowExpClean$estimate < log(ylim[1]), NA, toShowExpClean$estimate)
     toShowExpClean$conf.high <- ifelse(toShowExpClean$estimate < log(ylim[1]), NA, toShowExpClean$conf.high)
     toShowExpClean$conf.low <- ifelse(toShowExpClean$estimate > log(ylim[2]), NA, toShowExpClean$conf.low)
-    toShowExpClean$conf.high <- ifelse(1.3*log(tail(breaks, n = 1)) < toShowExpClean$conf.high, 1.3*log(tail(breaks, n = 1)), toShowExpClean$conf.high)
+    toShowExpClean$conf.high <- ifelse(1.3*log(utils::tail(breaks, n = 1)) < toShowExpClean$conf.high, 1.3*log(utils::tail(breaks, n = 1)), toShowExpClean$conf.high)
     toShowExpClean$conf.low <- ifelse(1.3*log(breaks[1]) > toShowExpClean$conf.low,  1.3*log(breaks[1]), toShowExpClean$conf.low)
   }
   width <- diff(rangeplot)
