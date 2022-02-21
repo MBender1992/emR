@@ -7,9 +7,6 @@
 #' @param prop.var variable for which propensity scores should be calculated
 #' @export
 
-data <- dat_coxph
-prop.var <- "TRT1GR"
-
 ate_weights <- function(data, vars, prop.var){
   data <- as.data.frame(data)
   vars <- vars[!vars %in% prop.var]
