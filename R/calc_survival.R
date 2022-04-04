@@ -8,6 +8,6 @@
 
 # calculate PFS
 calc_survival <- function(startDate, eventDate){
-  time <- eventDate - startDate
+  time <- eventDate - startDate + 1
   round(lubridate::time_length(time,unit="months"),2)
 }

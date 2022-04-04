@@ -4,9 +4,10 @@
 #' yyyymmdd
 #' format.
 #' @param x vector containing dates.
+#' @param day day to be imputed if only month is given.
 #' @export
 
-convert_date <- function(x){
+convert_date <- function(x, day = "-15"){
   x <- ifelse(stringr::str_detect(x, "^\\d{4}$"), paste(x, "-06", sep = ""), x)
   x <- ifelse(stringr::str_detect(x, "^\\d{4}-\\d{2}$"), paste(x, "-15", sep = ""), x)
   ymd <- lubridate::ymd(x)

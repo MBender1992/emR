@@ -37,7 +37,6 @@
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
 #' @export
 
-
 survplot_eumelareg <- function (data, time = "time", status = "status", var = NULL,
                                 xlab = "Time in months", ylab = "Probability of Survival", axes.offset = FALSE,
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
@@ -53,7 +52,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
 
   ## data preprocessing, filter out data with missing values of the target variable and assign legend labels based on factor levels
   if(!is.null(var)){
-    data <- data[!which(is.na(var))]
+    data <- data[which(!is.na(data[[var]]))]
     if (is.null(legend.labs)) {
       legend.labs <- sort(unique(data[[var]]))
       legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
@@ -75,7 +74,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   }
 
   ## fit survival
-  if(!is.null(var)){fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
+  if(!is.null(var)){
+    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
   } else {
     fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights)
     pval <- FALSE
@@ -108,7 +108,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   if(!is.null(var)){
     surv_med <- surv_median(fit)
     tbl <- as.data.frame(table(data[!is.na(eval(parse(text = time))),
-                                    droplevels(eval(parse(text = var)))]))
+                                    if(is.factor(data[[var]])) droplevels(eval(parse(text = var)))]))
     tbl$median <- sapply(1:length(surv_med$median), function(x) {
       paste(surv_med$median[x], " (", surv_med$lower[x],
             "-", surv_med$upper[x], ")", sep = "")
