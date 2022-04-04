@@ -4,10 +4,12 @@
 \alias{convert_date}
 \title{Standardize date format of clinical studies}
 \usage{
-convert_date(x)
+convert_date(x, day = "-15")
 }
 \arguments{
 \item{x}{vector containing dates.}
+
+\item{day}{day to be imputed if only month is given.}
 }
 \description{
 Missing months are replaced by June, missing days by 15th of the month. The date format is then transferred to a

@@ -18,6 +18,8 @@
 #' for numerical data and fisher exact test for categorical data.
 #' @export
 
+
+
 outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, weights = NULL,
                                    ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri", ...){
 
@@ -39,6 +41,8 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
   if (!is.null(ORR)) table_data[["ORR"]] <- get_stats(data = data, strat = var, outcome = ORR, statistics = statistics)
   if (!is.null(DCR)) table_data[["DCR"]] <- get_stats(data = data, strat = var, outcome = DCR, statistics = statistics)
   if (!is.null(med_surv)) table_data[["Survival"]] <- med_surv
+
+
 
   rgroup <- c()
   n.rgroup <- c()
@@ -69,6 +73,7 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
             ctable= TRUE
             )
 }
+
 
 
 
