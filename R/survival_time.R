@@ -17,7 +17,7 @@ survival_time <- function(data, time, status, var = NULL, times){
       paste(round(tmp$surv[x], 3) * 100,"% (", round(tmp$lower[x], 3) * 100,"%-", round(tmp$upper[x], 3) * 100,"%)", sep = "")
     })
     res <- data.frame(res)
-    rownames(res) <- levels(dat[[var]])
+    rownames(res) <- levels(data[[var]])
     colnames(res) <- paste(times, "-months survival", sep = "")
     return(res)
   } else {
