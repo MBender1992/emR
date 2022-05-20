@@ -5,8 +5,9 @@
 #' @param fit an object of class coxph or a list containing a mipo object and a list with number patients for each factor level
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param vars variables that were used in the coxph model
-#' @param point.size Size of mean points.
-#' @param line.size Size of errorbar line.
+#' @param point_size Size of mean points.
+#' @param line_size Size of errorbar line.
+#' @param axis_text_size size of axis text.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
@@ -18,7 +19,7 @@
 # ppt updaten mit der Fontsize
 
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.8,line.size = 0.7, vjust_text = 1.2, axis_text_size = 12,
+                                  cpositions = c(0, 0.1, 0.3), point_size = 3, fontsize = 0.8,line_size = 0.7, vjust_text = 1.2, axis_text_size = 12,
                                   refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <-  NULL
@@ -123,9 +124,9 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
     # color of the rectangles
     scale_fill_manual(values = c("#FFFFFF33","grey95"), guide = "none") +
     # show confidence intervals
-    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)),size = line.size, width =0) +
+    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)), size = line_size, width =0) +
     # plot mean points
-    geom_point(pch = 16, size = point.size, color = "#009AA6") +
+    geom_point(pch = 16, size = point_size, color = "#009AA6") +
     # add no effect line at 1
     geom_hline(yintercept = 1, linetype = 2) +
     coord_flip(ylim = exp(rangeplot)) +
