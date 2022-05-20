@@ -18,7 +18,7 @@
 # ppt updaten mit der Fontsize
 
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
-                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.8,line.size = 0.7, vjust_text = 1.2,
+                                  cpositions = c(0, 0.1, 0.3), point.size = 3, fontsize = 0.8,line.size = 0.7, vjust_text = 1.2, axis_text_size = 12,
                                   refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <-  NULL
@@ -99,7 +99,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
   toShowExpClean$estimate <- ifelse(toShowExpClean$estimate == 0, NA, toShowExpClean$estimate)
   toShowExpClean <- toShowExpClean[toShowExpClean$var != "(weights)",] #
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high, na.rm = TRUE)
-  breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7)
+  if(is.null(y_breaks)) breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7) else breaks <- y_breaks
   rangeplot <- rangeb
   rangeplot[1] <- rangeplot[1] - diff(rangeb)
   rangeplot[2] <- rangeplot[2] + 0.15 * diff(rangeb)
@@ -136,6 +136,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
           panel.grid.major.y = element_blank(),
           legend.position = "none",
           panel.border = element_blank(),
+          axis.text.x = element_text(size = fontsize *13),
           axis.title.y = element_blank(),
           axis.text.y = element_blank(),
           axis.ticks.y = element_blank(),

@@ -19,7 +19,7 @@
 #' @export
 
 forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL,
-                                       main = "Hazard ratio for disease progression or death (95% CI)",
+                                       main = "Hazard ratio for disease progression or death (95% CI)", axis_text_size = 12,
                                        y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point.size = 3,
                                        fontsize = 0.8, line.size = 0.7, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
