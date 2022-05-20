@@ -10,8 +10,9 @@
 #' @param meta.group variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).
 #' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
-#' @param point.size Size of mean points.
-#' @param line.size Size of errorbar line.
+#' @param point_size Size of mean points.
+#' @param line_size Size of errorbar line.
+#' @param axis_text_size size of axis text.
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
@@ -20,8 +21,8 @@
 
 forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL,
                                        main = "Hazard ratio for disease progression or death (95% CI)", axis_text_size = 12,
-                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point.size = 3,
-                                       fontsize = 0.8, line.size = 0.7, vjust_text = 1.2, noDigits = 2,
+                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point_size = 3,
+                                       fontsize = 0.8, line_size = 0.7, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
@@ -85,8 +86,8 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
                   ymax = exp(rangeplot[2]),  fill = ordered(seq_along(var)%%2 + 1))) +
     # color of the rectangles
     scale_fill_manual(values = c("#FFFFFF33", "grey95"), guide = "none") +
-    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)), size = line.size, width = 0) +
-    geom_point(pch = 16, size = point.size, color = "#009AA6") +
+    geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)), size = line_size, width = 0) +
+    geom_point(pch = 16, size = point_size, color = "#009AA6") +
     geom_hline(yintercept = 1, linetype = 2) + coord_flip(ylim = exp(rangeplot)) +
     ggtitle(main) +
     theme_light() +

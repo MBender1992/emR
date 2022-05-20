@@ -2,6 +2,9 @@
 #'
 #' This code generates a forest plot from a coxph model.
 #' @inheritParams survminer::ggforest
+#' @param time the time interval from start of observation until date of event (e.g. disease progression or death)
+#' or censoring.
+#' @param status variable specifying if event occured or data has been censored.
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param vars variables that were used in the coxph model
 #' @param point.size Size of mean points.

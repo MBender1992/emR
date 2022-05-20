@@ -32,12 +32,11 @@ get_stats(
 You can also specify if you want the total column "first" or "last"
 in the column order.}
 
-\item{show_all_values}{This is by default false as for instance if there is
-no missing and there is only one variable then it is most sane to only show
-one option as the other one will just be a complement to the first. For instance
-sex - if you know gender then automatically you know the distribution of the
-other sex as it's 100 \% - other \%. To choose which one you want to show then
-set the \code{default_ref} parameter.}
+\item{show_all_values}{Show all values in proportions. For factors with only two values
+it is most sane to only show one option as the other one will just be a complement
+to the first, i.e. we want to convey a proportion. For instance sex - if you know
+gender then automatically you know the distribution of the other sex as it's 100 \% - other \%.
+To choose which one you want to show then set the \code{default_ref} parameter.}
 
 \item{hrzl_prop}{This is default FALSE and indicates
 that the proportions are to be interpreted in a vertical manner.

@@ -5,6 +5,7 @@
 #' @import plotROC
 #' @import survival
 #' @import survminer
+#' @import RColorBrewer
 #' @import table1
 #' @importFrom stats as.formula aggregate chisq.test glm binomial predict
 #' @importFrom grDevices dev.off png
