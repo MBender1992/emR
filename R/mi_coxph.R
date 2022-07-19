@@ -61,6 +61,3 @@ mi_coxph <- function(data, time, status, vars, prop.var = NULL,  m = 5, ...){
   list(fit = res, nfit = n)
 }
 
-
-
-

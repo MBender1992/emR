@@ -13,10 +13,6 @@
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
-# univariate in ppt
-# Abzisse ebenfalls gleiche Fontsize
-# CIs cutten
-# ppt updaten mit der Fontsize
 
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
                                   cpositions = c(0, 0.1, 0.3), point_size = 3, fontsize = 0.8,line_size = 0.7, vjust_text = 1.2, axis_text_size = 12,
@@ -29,7 +25,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
   } else {
     model <- fit
   }
-
+  insight::get_data(model)
   if(any(class(model) %in% "mipo.summary")){
     if(is.null(data) | is.null(vars)) stop("Please provide data and variables argument.")
     data <- as.data.frame(data)
@@ -39,7 +35,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
     message("Using results from multiple imputation.")
   } else {
     stopifnot(inherits(model, "coxph"))
-    data <- insight::get_data(model, data = data)
+    data <- as.data.frame(survminer:::.get_data(model, data = data))
     terms <- attr(model$terms, "dataClasses")[-1]
     coef <- as.data.frame(broom::tidy(model, conf.int = TRUE))
     gmodel <- broom::glance(model)

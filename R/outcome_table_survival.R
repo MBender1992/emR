@@ -18,8 +18,6 @@
 #' for numerical data and fisher exact test for categorical data.
 #' @export
 
-
-
 outcome_table_survival <- function(data, time, status, surv_names, var, bestres = NULL, weights = NULL,
                                    ORR = NULL, DCR = NULL,statistics = TRUE, footnote = NULL, font = "calibri", ...){
 

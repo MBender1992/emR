@@ -13,13 +13,27 @@
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @export
 
+
 add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE, weights = NULL){
 
-  weights <- if(!is.null(weights)) data[[weights]]
+  if(!is.null(weights)){
+    if(length(levels(data[[var]])) >2){
+      stop("IPS weighted pvalues can only be calculated for factors with exactly 2 levels.")
+    }
+    weights <-  data[[weights]]
+  }
 
   fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
   surv_med <- surv_median(fit)
-  pval <- ifelse(surv_pvalue(fit)$pval < 0.0001, "< 0.0001", round(surv_pvalue(fit)$pval, 3))
+
+  if(!is.null(weights)){
+    dat_logrank <- data[!is.na(data[[time]])]
+    pval <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights)$p.value
+  } else {
+    pval <- surv_pvalue(fit)$pval
+  }
+
+  pval <- ifelse(pval < 0.0001, "< 0.0001", round(pval,3))
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
@@ -29,6 +43,7 @@ add_median_survival <- function(data, time, status, var, round = 1, statistics =
   tmp <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))
+
   if (statistics == TRUE){
     res <-rbind(tbl, tmp, pval)
     rownames(res) <- c(sort(as.character(unique(data[[var]]))), "Total", "pvalue")
