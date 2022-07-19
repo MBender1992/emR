@@ -81,6 +81,9 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     pval <- FALSE
   }
 
+  if(!is.null(weights)){
+    pval <- FALSE
+  }
 
   ## plot survival curve
   ggsurv <- ggsurvplot(fit, data = data, xlab = xlab, ylab = ylab,
@@ -89,11 +92,19 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                        ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
                        font.tickslab = plot.axes.text.size, font.x = plot.axes.title.size,
                        font.y = plot.axes.title.size, font.legend = legend.size,
-                       legend.labs = legend.labs, legend.title = legend.title, palette = palette, pval.coord = pval.coord,...)
+                       legend.labs = legend.labs, legend.title = legend.title, palette = palette, pval.coord = pval.coord)
 
   ## adjust survival curve
   ggsurv$plot <- ggsurv$plot + theme(legend.position = legend.position,
                                      plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
+
+  if(!is.null(weights)){
+    dat_logrank <- data[!is.na(data[[time]])]
+    pval <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights[!is.na(data[[time]])])$p.value
+    pval <- ifelse(pval < 0.0001, "< 0.0001", round(pval,3))
+    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+4, y = pval.coord[2], label = paste("p = ", pval, sep = ""), size = pval.size/2.835)
+  }
+
 
   ## draw risk table and remove unnecessary lines and text
   risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, xlim = xlim,
