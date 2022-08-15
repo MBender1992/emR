@@ -42,11 +42,11 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
                                 ggtheme = theme_eumelareg_surv_plot(), tables.theme = theme_eumelareg_surv_table(),
                                 plot.width = 0.838, plot.height = 0.7, plot.margin.left = 20,
-                                plot.axes.text.size =12, plot.axes.title.size = 12, weights = NULL,
+                                plot.axes.text.size =14, plot.axes.title.size = 14, weights = NULL,
                                 risk.table.width = 0.92, risk.table.title = NULL,
-                                risk.table.title.size = 12, risk.table.text.size = 12,
-                                legend.position = "top",legend.title = NULL, legend.labs = NULL, legend.size = 12,
-                                pval = TRUE, pval.coord = c(1,0.1), pval.size = 12,
+                                risk.table.title.size = 14, risk.table.text.size = 14,
+                                legend.position = "top",legend.title = NULL, legend.labs = NULL, legend.size = 14,
+                                pval = TRUE, pval.coord = c(1,0.1), pval.size = 14,
                                 merge = FALSE, palette = "jco",  ...)
 {
 
@@ -92,7 +92,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                        ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
                        font.tickslab = plot.axes.text.size, font.x = plot.axes.title.size,
                        font.y = plot.axes.title.size, font.legend = legend.size,
-                       legend.labs = legend.labs, legend.title = legend.title, palette = palette, pval.coord = pval.coord)
+                       legend.labs = legend.labs, legend.title = legend.title, palette = palette, pval.coord = pval.coord, ...)
 
   ## adjust survival curve
   ggsurv$plot <- ggsurv$plot + theme(legend.position = legend.position,
@@ -101,8 +101,21 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   if(!is.null(weights)){
     dat_logrank <- data[!is.na(data[[time]])]
     pval <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights[!is.na(data[[time]])])$p.value
-    pval <- ifelse(pval < 0.0001, "< 0.0001", round(pval,3))
-    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+4, y = pval.coord[2], label = paste("p = ", pval, sep = ""), size = pval.size/2.835)
+
+    if(pval < 0.0001){
+      pval <- "< 0.0001"
+      xjust <- 2.8
+      plabel <- paste("p ", pval, sep = "")
+    } else if (pval < 0.001 & pval >= 0.0001){
+      pval <- format(pval, scientific = F, digits = 1)
+      xjust <- 2.8
+      plabel <- paste("p = ", pval, sep = "")
+    }else {
+      pval <- round(pval, 3)
+      xjust <- 2.4
+      plabel <- paste("p = ", pval, sep = "")
+    }
+    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+xjust, y = pval.coord[2], label = plabel, size = pval.size/2.835)
   }
 
 
@@ -158,7 +171,6 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     return(p1)
   }
 }
-
-
+s
 
 
