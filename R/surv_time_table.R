@@ -10,7 +10,7 @@
 #' @param times Time in months for which survival should be calculated.
 #' @export
 
-surv_time_table <- function(data, time, status, times, var){
+surv_time_table <- function(data, time, status, times, var, print.html = TRUE){
   ls_total <- lapply(times, function(x){
     tmp <- mapply(survival_time, time = time, status = status,
                   MoreArgs = list(times = x, data = data))
