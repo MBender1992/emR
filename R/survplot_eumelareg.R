@@ -171,6 +171,6 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     return(p1)
   }
 }
-s
+
 
 
