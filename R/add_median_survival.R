@@ -18,7 +18,6 @@
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @export
 
-
 add_median_survival <- function(data, time, status, var, round = 1, statistics = TRUE, weights = NULL){
 
   if(!is.null(weights)){
@@ -38,7 +37,7 @@ add_median_survival <- function(data, time, status, var, round = 1, statistics =
     pval <- surv_pvalue(fit)$pval
   }
 
-  pval <- ifelse(pval < 0.0001, "< 0.0001", round(pval,3))
+  pval <- ifelse(pval < 0.0001, "< 0.0001", round(pval,4))
   tbl <- data.frame(sapply(1:length(surv_med$median),function(x){
     paste(round(surv_med$median[x],round), " (", round(surv_med$lower[x],round),"-", round(surv_med$upper[x],round),")", sep = "")
   }))

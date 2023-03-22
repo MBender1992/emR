@@ -12,5 +12,5 @@ nested_list_mean(list, vars)
 \item{vars}{variables tested for Influence on outcome.}
 }
 \description{
-This code generates takes each element i of nested list j and calculates the mean of the list elements with the same index.
+This code takes each element i of nested list j and calculates the mean of the list elements with the same index.
 }

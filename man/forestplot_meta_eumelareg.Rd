@@ -11,12 +11,14 @@ forestplot_meta_eumelareg(
   vars,
   meta.group,
   univariate = TRUE,
-  weights = NULL,
+  weights = FALSE,
+  imputation = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   axis_text_size = 12,
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
   point_size = 3,
+  impIter = 25,
   fontsize = 0.8,
   line_size = 0.7,
   vjust_text = 1.2,
@@ -39,7 +41,9 @@ or censoring.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate}
 
-\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+\item{weights}{Logical variable specifying whether inverse propensity score weighting should be applied.}
+
+\item{imputation}{Logical variable specifying whether missing should be replaced by multiple imputation}
 
 \item{main}{title of the plot.}
 
@@ -50,6 +54,8 @@ or censoring.}
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
 \item{point_size}{Size of mean points.}
+
+\item{impIter}{number of iterations for multiple imputation.}
 
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
 
