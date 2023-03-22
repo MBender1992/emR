@@ -19,21 +19,16 @@ survplot_eumelareg(
   tables.theme = theme_eumelareg_surv_table(),
   plot.width = 0.838,
   plot.height = 0.7,
-  plot.margin.left = 20,
-  plot.axes.text.size = 14,
-  plot.axes.title.size = 14,
+  plot.margin.left = NULL,
+  text.size = 12,
   weights = NULL,
-  risk.table.width = 0.92,
+  risk.table.width = 0.9,
   risk.table.title = NULL,
-  risk.table.title.size = 14,
-  risk.table.text.size = 14,
   legend.position = "top",
   legend.title = NULL,
   legend.labs = NULL,
-  legend.size = 14,
   pval = TRUE,
   pval.coord = c(1, 0.1),
-  pval.size = 14,
   merge = FALSE,
   palette = "jco",
   ...
@@ -71,19 +66,13 @@ or censoring.}
 
 \item{plot.margin.left}{numerical. Used to adjust the plot horizontally.}
 
-\item{plot.axes.text.size}{text size of x-axis and y-axis text.}
-
-\item{plot.axes.title.size}{text size of x-axis and y-axis titles.}
+\item{text.size}{size of plot text.}
 
 \item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
 
 \item{risk.table.width}{relative width of the risk table.}
 
 \item{risk.table.title}{the title to be used for the risk table. Default is no title.}
-
-\item{risk.table.title.size}{size of risk table title.}
-
-\item{risk.table.text.size}{size of risk table text.}
 
 \item{legend.position}{he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)}
 
@@ -92,16 +81,12 @@ or censoring.}
 \item{legend.labs}{character vector specifying legend labels. Used to replace the names of the strata from the fit.
 Should be given in the same order as those strata.}
 
-\item{legend.size}{size of the legend title and legend text.}
-
 \item{pval}{logical value, a numeric or a string. If logical and TRUE, the
 p-value is added on the plot. If numeric, than the computet p-value is
 substituted with the one passed with this parameter. If character, then the
 customized string appears on the plot. See examples - Example 3.}
 
 \item{pval.coord}{coords of pvalue within plot.}
-
-\item{pval.size}{size of pvalue within plot}
 
 \item{merge}{logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 two separate figures are generated. Default is FALSE.}

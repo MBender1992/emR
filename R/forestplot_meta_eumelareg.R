@@ -13,22 +13,34 @@
 #' @param point_size Size of mean points.
 #' @param line_size Size of errorbar line.
 #' @param axis_text_size size of axis text.
-#' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
+#' @param weights Logical variable specifying whether inverse propensity score weighting should be applied.
+#' @param imputation Logical variable specifying whether missing should be replaced by multiple imputation
+#' @param impIter number of iterations for multiple imputation.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
-forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL,
+forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = FALSE, imputation = FALSE,
                                        main = "Hazard ratio for disease progression or death (95% CI)", axis_text_size = 12,
-                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point_size = 3,
+                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point_size = 3, impIter = 25,
                                        fontsize = 0.8, line_size = 0.7, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
   conf.high <- conf.low <- estimate <- var <- NULL
-  ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, weights = weights,
-               status = status, vars = vars, meta.group = meta.group,
-               univariate = univariate)
+  if(imputation == TRUE){
+    ls <- lapply(vars, mi_coxph_meta_analysis, data = data, time = time, weights = weights, m = impIter,
+                 status = status, vars = vars, meta.group = meta.group)
+  } else{
+    if(weights == TRUE){
+      data$weight.ATE <- ate_weights(data, vars, prop.var = meta.group)
+    } else {
+      data$weight.ATE <- NULL
+    }
+    ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, weights = "weight.ATE",
+                 status = status, vars = vars, meta.group = meta.group,
+                 univariate = univariate)
+  }
   toShow <- lapply(1:length(ls), function(x) {
     toShow <- if(is.data.frame(ls[[x]][[1]]))  do.call(rbind, ls[[x]])  else ls[[x]]
     toShow <- toShow[toShow$term == paste(meta.group, levels(data[[meta.group]])[2],sep = ""), -c(1, 4)]

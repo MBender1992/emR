@@ -1,6 +1,6 @@
 #' Calculate mean for each list element in a nested list
 #'
-#' This code generates takes each element i of nested list j and calculates the mean of the list elements with the same index. 
+#' This code takes each element i of nested list j and calculates the mean of the list elements with the same index.
 #' @param list nested list
 #' @param vars variables tested for Influence on outcome.
 #' @export
@@ -13,7 +13,7 @@ nested_list_mean <- function(list, vars){
       if (!is.null(dim(varlist))) round(mean(varlist[y,]))
       else round(mean(varlist))
     })
-    
+
     n <- tmp[[1]]
     return(n)
   })

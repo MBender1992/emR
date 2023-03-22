@@ -9,6 +9,7 @@
 #' @param ... additional arguments to be passed on to coxph function
 #' @export
 
+
 mi_PS <- function(data, vars, prop.var = NULL,  m = 5, ...){
   weights_ate <- NULL
 
@@ -24,7 +25,7 @@ mi_PS <- function(data, vars, prop.var = NULL,  m = 5, ...){
 
   # calculate coxph and frequency of factor levels for each iteration of the multiple imputation
   ls_PS <- lapply(1:m, function(x){
-    tmp <- imp_comp[imp_comp$.imp ==x,]
+    tmp <- imp_comp[imp_comp$.imp ==1,]
     if(!is.null(prop.var)) tmp$weights.ate <- ate_weights(tmp, vars, prop.var = prop.var)
     return(tmp)
   })

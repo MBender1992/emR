@@ -14,6 +14,7 @@
 #' @param ... additional arguments passed on to coxph
 #' @export
 
+
 coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weights = NULL, univariate = FALSE, ...){
 
   vars_input <- NULL

@@ -16,23 +16,18 @@
 #' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
 #' @param risk.table.title the title to be used for the risk table. Default is no title.
-#' @param risk.table.title.size size of risk table title.
-#' @param risk.table.text.size size of risk table text.
+#' @param text.size size of plot text.
 #' @param risk.table.width relative width of the risk table.
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 #' two separate figures are generated. Default is FALSE.
 #' @param plot.width relative width of the survival plot
 #' @param plot.height relative height of the survival plot. The risk table is adjusted accordingly.
 #' @param plot.margin.left numerical. Used to adjust the plot horizontally.
-#' @param plot.axes.text.size text size of x-axis and y-axis text.
-#' @param plot.axes.title.size text size of x-axis and y-axis titles.
 #' @param legend.labs character vector specifying legend labels. Used to replace the names of the strata from the fit.
 #' Should be given in the same order as those strata.
 #' @param legend.position he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)
-#' @param legend.size size of the legend title and legend text.
 #' @param legend.title name of legend title.
 #' @param pval.coord coords of pvalue within plot.
-#' @param pval.size size of pvalue within plot
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
 #' @export
@@ -41,18 +36,18 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 xlab = "Time in months", ylab = "Probability of Survival", axes.offset = FALSE,
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
                                 ggtheme = theme_eumelareg_surv_plot(), tables.theme = theme_eumelareg_surv_table(),
-                                plot.width = 0.838, plot.height = 0.7, plot.margin.left = 20,
-                                plot.axes.text.size =14, plot.axes.title.size = 14, weights = NULL,
-                                risk.table.width = 0.92, risk.table.title = NULL,
-                                risk.table.title.size = 14, risk.table.text.size = 14,
-                                legend.position = "top",legend.title = NULL, legend.labs = NULL, legend.size = 14,
-                                pval = TRUE, pval.coord = c(1,0.1), pval.size = 14,
-                                merge = FALSE, palette = "jco",  ...)
+                                plot.width = 0.838, plot.height = 0.7, plot.margin.left = NULL,
+                                text.size = 12, weights = NULL,
+                                risk.table.width = 0.9, risk.table.title = NULL,
+                                legend.position = "top",legend.title = NULL, legend.labs = NULL,
+                                pval = TRUE, pval.coord = c(1,0.1), merge = FALSE, palette = "jco",  ...)
 {
 
   ## data preprocessing, filter out data with missing values of the target variable and assign legend labels based on factor levels
   if(!is.null(var)){
     data <- data[which(!is.na(data[[var]]))]
+    levels <- levels(data[[var]])
+    if(is.null(plot.margin.left)) plot.margin.left <- 12 * sqrt(max(nchar(levels)))
     if (is.null(legend.labs)) {
       legend.labs <- sort(unique(data[[var]]))
       legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
@@ -76,57 +71,60 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   ## fit survival
   if(!is.null(var)){
     fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
+    if(!is.null(weights)){
+      fit_table <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = NULL)
+      pval <- FALSE
+    } else {
+      fit_table <- fit
+    }
+
   } else {
     fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights)
     pval <- FALSE
   }
 
-  if(!is.null(weights)){
-    pval <- FALSE
-  }
-
   ## plot survival curve
   ggsurv <- ggsurvplot(fit, data = data, xlab = xlab, ylab = ylab,
-                       pval = pval, pval.size = pval.size/2.835,  xlim = xlim,
+                       pval = pval, pval.size = text.size/2.835,  xlim = xlim,
                        break.y.by = break.y.by, break.time.by = break.time.by,
                        ggtheme = ggtheme, tables.theme = tables.theme, axes.offset = axes.offset,
-                       font.tickslab = plot.axes.text.size, font.x = plot.axes.title.size,
-                       font.y = plot.axes.title.size, font.legend = legend.size,
+                       font.tickslab = text.size, font.x = text.size,
+                       font.y = text.size, font.legend = text.size,
                        legend.labs = legend.labs, legend.title = legend.title, palette = palette, pval.coord = pval.coord, ...)
 
-  ## adjust survival curve
+  ## adjust survival curve position
   ggsurv$plot <- ggsurv$plot + theme(legend.position = legend.position,
                                      plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
 
+  # calculate and display propensity score weighted pvalue
   if(!is.null(weights)){
     dat_logrank <- data[!is.na(data[[time]])]
     pval <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights[!is.na(data[[time]])])$p.value
 
     if(pval < 0.0001){
       pval <- "< 0.0001"
-      xjust <- 2.8
+      xjust <- 2.8*(text.size+1)/12
       plabel <- paste("p ", pval, sep = "")
     } else if (pval < 0.001 & pval >= 0.0001){
       pval <- format(pval, scientific = F, digits = 1)
-      xjust <- 2.8
+      xjust <- 2.8*(text.size+1)/12
       plabel <- paste("p = ", pval, sep = "")
     }else {
       pval <- round(pval, 3)
-      xjust <- 2.4
+      xjust <- 2.4*(text.size+1)/12
       plabel <- paste("p = ", pval, sep = "")
     }
-    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+xjust, y = pval.coord[2], label = plabel, size = pval.size/2.835)
+    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+xjust, y = pval.coord[2], label = plabel, size = text.size/2.835)
   }
 
-
   ## draw risk table and remove unnecessary lines and text
-  risk_table <- ggrisktable(fit, data = data, risk.table.title = risk.table.title, xlim = xlim,
-                            fontsize = risk.table.text.size/2.835, break.time.by = break.time.by, # size/2.835 from points to mm
+  risk_table <- ggrisktable(fit_table, data = data, risk.table.title = risk.table.title, xlim = c(0, xlim[2]-1),
+                            fontsize = text.size/2.835, break.time.by = break.time.by, # size/2.835 from points to mm
                             legend.labs = legend.labs.risk.table, ...) +
     theme(axis.line.y = element_blank(), axis.title.y = element_blank(),
           axis.ticks.y = element_blank(), axis.line.x = element_blank(),
           axis.text.x = element_blank(), axis.title.x = element_blank(),
-          axis.ticks.x = element_blank(), plot.title = element_text(face = "bold", size = risk.table.title.size))
+          axis.ticks.x = element_blank(), plot.title = element_text(face = "bold", size = text.size))
 
   ## calculate median survival and draw as table
   if(!is.null(var)){
