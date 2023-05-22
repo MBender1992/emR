@@ -22,6 +22,7 @@ survplot_eumelareg(
   plot.margin.left = NULL,
   text.size = 12,
   weights = NULL,
+  landmarks = c(12, 24),
   risk.table.width = 0.9,
   risk.table.title = NULL,
   legend.position = "top",
@@ -69,6 +70,9 @@ or censoring.}
 \item{text.size}{size of plot text.}
 
 \item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+
+\item{landmarks}{times for which landmark survival data shall be provided.
+Should be given in the same order as those strata.}
 
 \item{risk.table.width}{relative width of the risk table.}
 

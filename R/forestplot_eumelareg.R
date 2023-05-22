@@ -14,6 +14,7 @@
 #' @export
 
 
+
 forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard ratio for disease progression or death (95% CI)", y_breaks = NULL,
                                   cpositions = c(0, 0.1, 0.3), point_size = 3, fontsize = 0.8,line_size = 0.7, vjust_text = 1.2, axis_text_size = 12,
                                   refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
@@ -137,7 +138,7 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
           axis.title.y = element_blank(),
           axis.text.y = element_blank(),
           axis.ticks.y = element_blank(),
-          plot.title = element_text(hjust = 0.5)) +
+          plot.title = element_text(size = fontsize *13, hjust = 0.5)) +
     xlab("") +
     annotate(geom = "text", x = x_annotate,
              y = exp(y_variable), label = toShowExpClean$var, fontface = "bold",

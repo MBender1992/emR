@@ -7,7 +7,8 @@
 #' @import survminer
 #' @import RColorBrewer
 #' @import table1
-#' @importFrom stats as.formula aggregate chisq.test glm binomial predict
+#' @importFrom stats as.formula aggregate chisq.test glm binomial predict xtabs
 #' @importFrom grDevices dev.off png
+#' @importFrom utils combn
 NULL
 
