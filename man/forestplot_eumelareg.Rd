@@ -11,11 +11,11 @@ forestplot_eumelareg(
   main = "Hazard ratio for disease progression or death (95\% CI)",
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
-  point_size = 3,
-  fontsize = 0.8,
-  line_size = 0.7,
+  point_size = 4,
+  fontsize = 1,
+  line_size = 0.9,
   vjust_text = 1.2,
-  axis_text_size = 12,
+  subset = NULL,
   refLabel = "reference",
   noDigits = 2,
   varnames = NULL,
@@ -44,7 +44,7 @@ will be extracted from 'fit' object.}
 
 \item{vjust_text}{vertical adjustment of text containing information about events, global pvalue, AIC and concordance index}
 
-\item{axis_text_size}{size of axis text.}
+\item{subset}{Display only specified variables as a subset of cox regression. If multivariable cox model was calculated the results shown are adjusted for all input variables but only the specified subset will be displayed.}
 
 \item{refLabel}{label for reference levels of factor variables.}
 

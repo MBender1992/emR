@@ -21,7 +21,8 @@
 #' @export
 
 forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = FALSE, imputation = FALSE,
-                                       main = "Hazard ratio for disease progression or death (95% CI)",                                        y_breaks = NULL, cpositions = c(0, 0.1, 0.3), point_size = 3, impIter = 25,
+                                       main = "Hazard ratio for disease progression or death (95% CI)",
+                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), impIter = 25,
                                        point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
@@ -47,10 +48,9 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
     return(toShow)
   })
   toShow <- do.call(rbind, toShow)
-  if (!is.null(varnames)) toShow$var <- varnames
 
   # plot the Forestplot
-  forest_plotFUN(toShow = toShow, main = main,  y_breaks = y_breaks, cpositions = cpositions, point_size = point_size,
+  forest_plotFUN(toShow = toShow, main = main,  y_breaks = y_breaks, cpositions = cpositions, point_size = point_size, varnames = varnames,
                  fontsize = fontsize, line_size = line_size, vjust_text = vjust_text, refLabel = refLabel, noDigits = noDigits, ylim =ylim)
   # toShowExp <- toShow[, 5:7]
   # toShowExp[is.na(toShowExp)] <- 0

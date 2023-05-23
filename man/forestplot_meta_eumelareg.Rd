@@ -14,13 +14,12 @@ forestplot_meta_eumelareg(
   weights = FALSE,
   imputation = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
-  axis_text_size = 12,
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
-  point_size = 3,
   impIter = 25,
-  fontsize = 0.8,
-  line_size = 0.7,
+  point_size = 4,
+  fontsize = 1,
+  line_size = 0.9,
   vjust_text = 1.2,
   noDigits = 2,
   varnames = NULL,
@@ -47,15 +46,13 @@ or censoring.}
 
 \item{main}{title of the plot.}
 
-\item{axis_text_size}{size of axis text.}
-
 \item{y_breaks}{argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.}
 
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
-\item{point_size}{Size of mean points.}
-
 \item{impIter}{number of iterations for multiple imputation.}
+
+\item{point_size}{Size of mean points.}
 
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
 

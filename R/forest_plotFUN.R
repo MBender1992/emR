@@ -10,7 +10,10 @@
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
 
-forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fontsize, line_size, vjust_text, refLabel, noDigits, ylim){
+
+
+forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fontsize, line_size, vjust_text, refLabel, noDigits, ylim, varnames){
+  if(!is.null(varnames)) toShow$var <- stringi::stri_replace_all_fixed(toShow$var, pattern = vars, replacement = varnames, vectorize_all = FALSE)
   toShowExp <- toShow[, 5:7]
   toShowExp[is.na(toShowExp)] <- 0
   toShowExp <- format(exp(toShowExp), digits = noDigits)
@@ -53,7 +56,7 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fonts
   y_stars <- rangeb[2]
   x_annotate <- seq_len(nrow(toShowExpClean))
   annot_size_mm <- fontsize * as.numeric(grid::convertX(unit(theme_get()$text$size,  "pt"), "mm"))
-  
+
   p <- ggplot(toShowExpClean, aes(seq_along(var), exp(estimate))) +
     geom_rect(aes(xmin = seq_along(var) - 0.5, xmax = seq_along(var) +  0.5, ymin = exp(rangeplot[1]),
                   ymax = exp(rangeplot[2]),  fill = ordered(seq_along(var)%%2 + 1))) +
@@ -83,13 +86,13 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fonts
              label = toShowExpClean$estimateCI, size = annot_size_mm) +
     annotate(geom = "text", x = x_annotate, y = if (!is.null(ylim))   ylim[2] - 0.4 * ylim[2]  else exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,   hjust = -0.2, fontface = "italic")
-  
+
   if (!is.null(y_breaks)) {
     p <- p + scale_y_log10(name = "", expand = c(0.02,  0.02), breaks = breaks)
   } else {
     p <- p + scale_y_log10(name = "", labels = sprintf("%g",breaks), expand = c(0.02, 0.02), breaks = breaks)
   }
-  
+
   gt <- suppressWarnings(ggplot_gtable(ggplot_build(p)))
   gt$layout$clip[gt$layout$name == "panel"] <- "off"
   ggpubr::as_ggplot(gt)
