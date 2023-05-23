@@ -17,8 +17,6 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
                                   cpositions = c(0, 0.1, 0.3), point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, subset = NULL,
                                   refLabel = "reference", noDigits = 2, varnames = NULL, ylim = NULL){
 
-  conf.high <- conf.low <- estimate <- var <-  NULL
-
   if(any(class(fit) %in% "list")){
     model <- fit$fit
   } else {

@@ -30,6 +30,7 @@ Imports:
     RColorBrewer,
     scales,
     stats,
+    stringi,
     stringr,
     survival, 
     survminer,

@@ -17,6 +17,7 @@ forestplot_meta_eumelareg(
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
   impIter = 25,
+  refLabel = "reference",
   point_size = 4,
   fontsize = 1,
   line_size = 0.9,
@@ -51,6 +52,8 @@ or censoring.}
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
 \item{impIter}{number of iterations for multiple imputation.}
+
+\item{refLabel}{label for reference levels of factor variables.}
 
 \item{point_size}{Size of mean points.}
 

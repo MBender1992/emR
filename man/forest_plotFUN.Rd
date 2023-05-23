@@ -41,6 +41,8 @@ forest_plotFUN(
 \item{noDigits}{number of digits for estimates and p-values in the plot.}
 
 \item{ylim}{argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.}
+
+\item{varnames}{Character vector specifying rownames of the table (empty columns should be named with "").}
 }
 \description{
 This code generates a helper function used in the wrappers "forestplot_eumelareg" and "forestplot_meta_eumelareg".

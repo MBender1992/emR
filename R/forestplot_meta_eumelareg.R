@@ -22,11 +22,10 @@
 
 forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = FALSE, imputation = FALSE,
                                        main = "Hazard ratio for disease progression or death (95% CI)",
-                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), impIter = 25,
+                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), impIter = 25, refLabel =  "reference",
                                        point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
-  conf.high <- conf.low <- estimate <- var <- NULL
   if(imputation == TRUE){
     ls <- lapply(vars, mi_coxph_meta_analysis, data = data, time = time, weights = weights, m = impIter,
                  status = status, vars = vars, meta.group = meta.group)
