@@ -68,13 +68,11 @@ forestplot_eumelareg <- function (fit, data = NULL, vars = NULL, main = "Hazard 
   toShow <- cbind(allTermsDF, coef[inds, ])[, c("var",
                                                 "level", "N", "p.value", "estimate",
                                                 "conf.low", "conf.high", "pos")]
-  if (!is.null(varnames)) toShow$var <- varnames
-
-  # only display subset of variables
+    # only display subset of variables
   if(!is.null(subset)) toShow <- toShow[toShow$var %in% subset,]
 
   # plot the Forestplot
-  forest_plotFUN(toShow = toShow, main = main,  y_breaks = y_breaks, cpositions = cpositions, point_size = point_size,
+  forest_plotFUN(toShow = toShow, main = main,  y_breaks = y_breaks, cpositions = cpositions, point_size = point_size, varnames = varnames,
                  fontsize = fontsize, line_size = line_size, vjust_text = vjust_text, refLabel = refLabel, noDigits = noDigits, ylim =ylim)
   # toShowExp <- toShow[, 5:7]
   # toShowExp[is.na(toShowExp)] <- 0
