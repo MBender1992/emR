@@ -10,5 +10,6 @@
 #' @importFrom stats as.formula aggregate chisq.test glm binomial predict xtabs
 #' @importFrom grDevices dev.off png
 #' @importFrom utils combn
+#' @importFrom stringi stri_replace_all_fixed
 NULL
 

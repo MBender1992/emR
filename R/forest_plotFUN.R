@@ -4,6 +4,7 @@
 #' @inheritParams survminer::ggforest
 #' @param toShow Results of a cox regression containing variable names, variable levels, hazards, confidence intervals and p-values, which will be converted to a forestplot.
 #' @param point_size Size of mean points.
+#' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
 #' @param line_size Size of errorbar line.
 #' @param vjust_text vertical adjustment of text containing information about events, global pvalue, AIC and concordance index
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
@@ -11,9 +12,12 @@
 #' @export
 
 
-
 forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fontsize, line_size, vjust_text, refLabel, noDigits, ylim, varnames){
-  if(!is.null(varnames)) toShow$var <- stringi::stri_replace_all_fixed(toShow$var, pattern = vars, replacement = varnames, vectorize_all = FALSE)
+
+  # set variable names which can be a function to NULL
+  conf.high <- conf.low <- estimate <- var <-  NULL
+
+  if(!is.null(varnames)) toShow$var <- stri_replace_all_fixed(toShow$var, pattern = vars, replacement = varnames, vectorize_all = FALSE)
   toShowExp <- toShow[, 5:7]
   toShowExp[is.na(toShowExp)] <- 0
   toShowExp <- format(exp(toShowExp), digits = noDigits)
