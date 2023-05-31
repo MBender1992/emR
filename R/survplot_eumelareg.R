@@ -34,8 +34,6 @@
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
 #' @export
 
-
-
 survplot_eumelareg <- function (data, time = "time", status = "status", var = NULL,
                                 xlab = "Time in months", ylab = "Probability of Survival", axes.offset = FALSE,
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
@@ -158,7 +156,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
 
   if(!is.null(var)){
     lndmrk <- lapply(landmarks, function(t){
-      survival_time(data = data, time = "OS", status = "OSCENS", var = "TRT1CLASS", times = t)
+      survival_time(data = data, time = time, status = status, var = var, times = t)
     })
     lndmrk <- rlist::list.cbind(lndmrk)
     lndmrkGrob <- gridExtra::tableGrob(lndmrk, theme = gridExtra::ttheme_minimal())
@@ -191,3 +189,5 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     return(p1)
   }
 }
+
+
