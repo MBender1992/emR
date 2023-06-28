@@ -12,7 +12,7 @@
 #' @export
 
 
-forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fontsize, line_size, vjust_text, refLabel, noDigits, ylim, varnames){
+forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_size, fontsize, line_size, vjust_text, noDigits, ylim, varnames){
 
   # set variable names which can be a function to NULL
   conf.high <- conf.low <- estimate <- var <-  NULL
@@ -27,6 +27,7 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, point_size, fonts
                                  ifelse(toShowExpClean$p.value < 0.01, "*", ""),
                                  ifelse(toShowExpClean$p.value < 0.001, "*", ""))
   toShowExpClean$ci <- paste0("(", toShowExpClean[, "conf.low.1"], " - ", toShowExpClean[, "conf.high.1"], ")")
+  toShowExpClean$estimate.1[is.na(toShowExpClean$estimate)] = refLabel
   toShowExpClean$stars[which(toShowExpClean$p.value < 0.001)] = "<0.001 ***"
   toShowExpClean$stars[is.na(toShowExpClean$estimate)] = ""
   toShowExpClean$ci[is.na(toShowExpClean$estimate)] = ""
