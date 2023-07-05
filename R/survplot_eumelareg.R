@@ -41,7 +41,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 plot.width = 0.838, plot.height = 0.7, plot.margin.left = NULL,
                                 text.size = 12, weights = NULL, landmarks = c(12,24),
                                 risk.table.width = 0.9, risk.table.title = NULL,
-                                legend.position = "top",legend.title = NULL, legend.labs = NULL,
+                                legend.position = "top",legend.title = "", legend.labs = NULL,
                                 pval = TRUE, pval.coord = c(1,0.1), merge = FALSE, palette = "jco",  ...)
 {
 
