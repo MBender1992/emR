@@ -40,8 +40,6 @@ outcome_table_survival <- function(data, time, status, surv_names, var, bestres 
   if (!is.null(DCR)) table_data[["DCR"]] <- get_stats(data = data, strat = var, outcome = DCR, statistics = statistics)
   if (!is.null(med_surv)) table_data[["Survival"]] <- med_surv
 
-
-
   rgroup <- c()
   n.rgroup <- c()
   output_data <- NULL
