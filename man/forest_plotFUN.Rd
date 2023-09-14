@@ -9,11 +9,11 @@ forest_plotFUN(
   main,
   y_breaks,
   cpositions,
+  refLabel,
   point_size,
   fontsize,
   line_size,
   vjust_text,
-  refLabel,
   noDigits,
   ylim,
   varnames
@@ -28,6 +28,8 @@ forest_plotFUN(
 
 \item{cpositions}{relative positions of first three columns in the OX scale.}
 
+\item{refLabel}{label for reference levels of factor variables.}
+
 \item{point_size}{Size of mean points.}
 
 \item{fontsize}{relative size of annotations in the plot. Default value: 0.7.}
@@ -35,8 +37,6 @@ forest_plotFUN(
 \item{line_size}{Size of errorbar line.}
 
 \item{vjust_text}{vertical adjustment of text containing information about events, global pvalue, AIC and concordance index}
-
-\item{refLabel}{label for reference levels of factor variables.}
 
 \item{noDigits}{number of digits for estimates and p-values in the plot.}
 

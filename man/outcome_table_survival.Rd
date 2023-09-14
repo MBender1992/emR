@@ -12,6 +12,7 @@ outcome_table_survival(
   var,
   bestres = NULL,
   weights = NULL,
+  html = TRUE,
   ORR = NULL,
   DCR = NULL,
   statistics = TRUE,
@@ -34,6 +35,8 @@ outcome_table_survival(
 \item{bestres}{column containing data for best response}
 
 \item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+
+\item{html}{logical indicating whether output should be in html format. Defautl is TRUE.}
 
 \item{ORR}{column containing data for over all response rate}
 

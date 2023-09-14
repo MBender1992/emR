@@ -26,12 +26,13 @@ survplot_eumelareg(
   risk.table.width = 0.9,
   risk.table.title = NULL,
   legend.position = "top",
-  legend.title = NULL,
+  legend.title = "",
   legend.labs = NULL,
   pval = TRUE,
   pval.coord = c(1, 0.1),
   merge = FALSE,
   palette = "jco",
+  extract.legend = FALSE,
   ...
 )
 }
@@ -103,6 +104,8 @@ e.g. "RdBu", "Blues", ...; or custom color palette e.g. c("blue", "red"); and sc
 See details section for more information.  Can be also a numeric vector of
 length(groups); in this case a basic color palette is created using the
 function \link[grDevices]{palette}.}
+
+\item{extract.legend}{logical indicating whether only the legend should be extracted from the plot to build manual arrangements of plots and legend with \code{\link[=ggarrange]{ggarrange()}}}
 
 \item{...}{Futher arguments as described hereafter and
 other arguments to be passed i) to ggplot2 geom_*() functions such

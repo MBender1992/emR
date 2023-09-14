@@ -7,10 +7,11 @@
 #' @param vars character vector specifying columns that shall be included in the table
 #' @inheritParams table1::table1
 #' @inheritParams rstatix::anova_test
+#' @param html logical indicating whether output should include html characters or not
 #' @param ... additional arguments passed on to [table1()] function.
 #' @export
 
-table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...){
+table1_pval <- function(data, strat, vars, footnote = NULL, html = TRUE, white.adjust = TRUE, ...){
 
   if (any(is.na(data[[strat]]))) {
     warning("There are missing values in the grouping variable. These are excluded from statistical analysis.")
@@ -28,7 +29,11 @@ table1_pval <- function(data, strat, vars, footnote = NULL, white.adjust = TRUE,
       } else {
         p <- chisq.test(table(y, droplevels(data[[strat]][ind])))$p.value
       }
-      s[2] <- sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+      if(html == TRUE){
+        s[2] <- sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+      } else {
+        s[2] <- format.pval(p, digits=3, eps=0.001)
+      }
       s
     } else {
       render.default(x=x, name=name, ...)
