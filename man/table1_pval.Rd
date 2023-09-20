@@ -4,7 +4,15 @@
 \alias{table1_pval}
 \title{Print table1 with pvalues}
 \usage{
-table1_pval(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...)
+table1_pval(
+  data,
+  strat,
+  vars,
+  footnote = NULL,
+  html = TRUE,
+  white.adjust = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{data.frame or data.table containing patient characteristics and demographics}
@@ -16,6 +24,8 @@ table1_pval(data, strat, vars, footnote = NULL, white.adjust = TRUE, ...)
 \item{footnote}{A character string to be added as a footnote to the table.
 Can also be a vector which results in multiple lines of footnotes.
 The default \code{NULL} causes the footnote to be omitted.}
+
+\item{html}{logical indicating whether output should include html characters or not}
 
 \item{white.adjust}{Default is FALSE. If TRUE, heteroscedasticity correction
 is applied to the coefficient of covariance matrix. Used only for

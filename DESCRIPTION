@@ -1,6 +1,6 @@
 Package: emR
 Title: Dictionary for EuMelaReg functions (analysis of clinical studies)
-Version: 0.3.4
+Version: 0.4.1
 Authors@R: 
     person(given = "Marc",
            family = "Bender",
@@ -11,6 +11,7 @@ Imports:
     broom,
     cowplot,
     data.table,
+    flextable,
     ggsci,
     ggpubr,
     ggplot2,

@@ -15,7 +15,7 @@
 #' @export
 
 save_surv_plot_eumelareg <- function(data,time, status, var,legend.labs=NULL, regID = "REGISTR", registry = "EUMELAREG",path = NULL,...){
-
+  warning("This function is outdated. Please use save_surv_plot_EMR.")
   LOT <- stringr::str_extract(time, "\\d")
   tmp <- stringr::str_extract(status, stringr::fixed(c("PFS","OS"), ignore_case=TRUE))
   survival <- tmp[-which(is.na(tmp))]

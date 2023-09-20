@@ -7,9 +7,11 @@
 #' @import survminer
 #' @import RColorBrewer
 #' @import table1
+#' @import flextable
 #' @importFrom stats as.formula aggregate chisq.test glm binomial predict xtabs
 #' @importFrom grDevices dev.off png
-#' @importFrom utils combn
+#' @importFrom utils combn write.csv2
 #' @importFrom stringi stri_replace_all_fixed
 NULL
+
 

@@ -31,6 +31,7 @@
 #' @param legend.title name of legend title.
 #' @param pval.coord coords of pvalue within plot.
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
+#' @param extract.legend logical indicating whether only the legend should be extracted from the plot to build manual arrangements of plots and legend with [ggarrange()]
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
 #' @export
 
@@ -42,7 +43,7 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 text.size = 12, weights = NULL, landmarks = c(12,24),
                                 risk.table.width = 0.9, risk.table.title = NULL,
                                 legend.position = "top",legend.title = "", legend.labs = NULL,
-                                pval = TRUE, pval.coord = c(1,0.1), merge = FALSE, palette = "jco",  ...)
+                                pval = TRUE, pval.coord = c(1,0.1), merge = FALSE, palette = "jco", extract.legend = FALSE,  ...)
 {
 
   ## data preprocessing, filter out data with missing values of the target variable and assign legend labels based on factor levels
@@ -175,6 +176,12 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   p1 <- cowplot::ggdraw() +
     cowplot::draw_plot(risk_table, x = 0, y = 0, width = risk.table.width, height = table.height) +
     cowplot::draw_plot(ggsurv$plot, x = 0.04, y = 1 - plot.height, width = plot.width, height = plot.height)
+
+  # functionality to only extract the legend of the plot
+  if(extract.legend == TRUE){
+    legend <- ggpubr::get_legend(ggsurv$plot)
+    return(legend)
+  }
 
   # arrange survplot+table with median survival table
   if(!is.null(var)){
