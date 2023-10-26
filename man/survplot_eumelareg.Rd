@@ -18,11 +18,12 @@ survplot_eumelareg(
   ggtheme = theme_eumelareg_surv_plot(),
   tables.theme = theme_eumelareg_surv_table(),
   plot.width = 0.838,
-  plot.height = 0.7,
+  plot.height = 0.88,
   plot.margin.left = NULL,
   text.size = 12,
   weights = NULL,
   landmarks = c(12, 24),
+  conf.type = "log-log",
   risk.table.width = 0.9,
   risk.table.title = NULL,
   legend.position = "top",
@@ -74,6 +75,8 @@ or censoring.}
 
 \item{landmarks}{times for which landmark survival data shall be provided.
 Should be given in the same order as those strata.}
+
+\item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS.}
 
 \item{risk.table.width}{relative width of the risk table.}
 

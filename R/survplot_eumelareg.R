@@ -16,6 +16,7 @@
 #' @param axes.offset logical value. If TRUE the space between the plot origin and the axes is removed.
 #' @inheritParams survminer::ggsurvplot
 #' @param risk.table.title the title to be used for the risk table. Default is no title.
+#' @param conf.type Method to calculate confidence intervals. Log-log method is the default in SAS.
 #' @param text.size size of plot text.
 #' @param risk.table.width relative width of the risk table.
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
@@ -39,8 +40,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
                                 xlab = "Time in months", ylab = "Probability of Survival", axes.offset = FALSE,
                                 break.y.by = 0.1, break.time.by = 3,  xlim = c(0, 48),
                                 ggtheme = theme_eumelareg_surv_plot(), tables.theme = theme_eumelareg_surv_table(),
-                                plot.width = 0.838, plot.height = 0.7, plot.margin.left = NULL,
-                                text.size = 12, weights = NULL, landmarks = c(12,24),
+                                plot.width = 0.838, plot.height = 0.88, plot.margin.left = NULL,
+                                text.size = 12, weights = NULL, landmarks = c(12,24), conf.type = "log-log",
                                 risk.table.width = 0.9, risk.table.title = NULL,
                                 legend.position = "top",legend.title = "", legend.labs = NULL,
                                 pval = TRUE, pval.coord = c(1,0.1), merge = FALSE, palette = "jco", extract.legend = FALSE,  ...)
@@ -55,8 +56,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
       data <- data[which(!is.na(data[[var]])), ]
     }
     levels <- levels(data[[var]])
-    if(is.null(plot.margin.left)) plot.margin.left <- 12 * sqrt(max(nchar(levels)))
-    if (is.null(legend.labs)) {
+   if(is.null(plot.margin.left)) plot.margin.left <- 12 * sqrt(max(nchar(levels)))
+   if (is.null(legend.labs)) {
       legend.labs <- sort(unique(data[[var]]))
       legend.labs.risk.table <- gsub(">", "&gt;", legend.labs)
     } else {
@@ -78,16 +79,16 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
 
   ## fit survival
   if(!is.null(var)){
-    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights)
+    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = weights, conf.type = conf.type)
     if(!is.null(weights)){
-      fit_table <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = NULL)
+      fit_table <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ eval(parse(text = var)), data = data, weights = NULL, conf.type = conf.type)
       pval <- FALSE
     } else {
       fit_table <- fit
     }
 
   } else {
-    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights)
+    fit <- surv_fit(Surv(eval(parse(text = time)), eval(parse(text = status))) ~ 1, data = data, weights = weights, conf.type = conf.type)
     pval <- FALSE
   }
 

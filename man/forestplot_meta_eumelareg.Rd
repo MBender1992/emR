@@ -11,7 +11,7 @@ forestplot_meta_eumelareg(
   vars,
   meta.group,
   univariate = TRUE,
-  weights = FALSE,
+  weights = NULL,
   imputation = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
   y_breaks = NULL,

@@ -1,6 +1,6 @@
 Package: emR
 Title: Dictionary for EuMelaReg functions (analysis of clinical studies)
-Version: 0.4.1
+Version: 0.5.0
 Authors@R: 
     person(given = "Marc",
            family = "Bender",
