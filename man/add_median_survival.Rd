@@ -11,7 +11,8 @@ add_median_survival(
   var,
   round = 1,
   statistics = TRUE,
-  weights = NULL
+  weights = NULL,
+  conf.type = "log-log"
 )
 }
 \arguments{
@@ -30,6 +31,8 @@ indicating censored data and 1 indicating event.}
 \item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.}
 
 \item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+
+\item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS.}
 }
 \description{
 This function fits a survival curve for each subgroup defined by var and extracts the median survival times.
