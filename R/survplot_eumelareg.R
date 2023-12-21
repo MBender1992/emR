@@ -108,22 +108,23 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
   # calculate and display propensity score weighted pvalue
   if(!is.null(weights)){
     dat_logrank <- data[!is.na(data[[time]])]
-    pval <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights[!is.na(data[[time]])])$p.value
+    pval.ipsw <- logrank_IPSW_RISCA(dat_logrank[[time]], dat_logrank[[status]], ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1), weights[!is.na(data[[time]])])$p.value
 
-    if(pval < 0.0001){
-      pval <- "< 0.0001"
+    if(pval.ipsw < 0.0001){
+      pval.ipsw <- "< 0.0001"
       xjust <- 2.8*(text.size+1)/12
-      plabel <- paste("p ", pval, sep = "")
-    } else if (pval < 0.001 & pval >= 0.0001){
-      pval <- format(pval, scientific = F, digits = 1)
+      plabel <- paste("p ", pval.ipsw, sep = "")
+    } else if (pval.ipsw < 0.001 & pval.ipsw >= 0.0001){
+      pval.ipsw <- format(pval.ipsw, scientific = F, digits = 1)
       xjust <- 2.8*(text.size+1)/12
       plabel <- paste("p = ", pval, sep = "")
     }else {
-      pval <- round(pval, 3)
+      pval.ipsw <- round(pval.ipsw, 3)
       xjust <- 2.4*(text.size+1)/12
-      plabel <- paste("p = ", pval, sep = "")
+      plabel <- paste("p = ", pval.ipsw, sep = "")
     }
-    ggsurv$plot <-ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+xjust, y = pval.coord[2], label = plabel, size = text.size/2.835)
+    ggsurv$plot <- ggsurv$plot + annotate(geom = "text", x = pval.coord[1]+xjust, y = pval.coord[2], label = plabel, size = text.size/2.835)
+
   }
 
   ## draw risk table and remove unnecessary lines and text
