@@ -147,8 +147,8 @@ survplot_eumelareg <- function (data, time = "time", status = "status", var = NU
     }
 
     tbl$median <- sapply(1:length(surv_med$median), function(x) {
-      paste(surv_med$median[x], " (", surv_med$lower[x],
-            "-", surv_med$upper[x], ")", sep = "")
+      paste(round(surv_med$median[x],2), " (", round(surv_med$lower[x],2),
+            "-", round(surv_med$upper[x],2), ")", sep = "")
     })
     rownames(tbl) <- tbl$Var1
     tbl$Var1 <- NULL
