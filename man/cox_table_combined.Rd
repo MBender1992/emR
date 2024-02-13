@@ -7,12 +7,14 @@
 cox_table_combined(
   data,
   time,
+  time2 = NULL,
   status,
   vars,
   fixed.var = NULL,
   rgroup = NULL,
   p.thres = 0.1,
   footnote = NULL,
+  output = "html",
   ...
 )
 }
@@ -21,6 +23,10 @@ cox_table_combined(
 
 \item{time}{the time interval from start of observation until date of event (e.g. disease progression or death)
 or censoring.}
+
+\item{time2}{ending time of the interval for interval censored or counting process data only.
+Intervals are assumed to be open on the left and closed on the right, (start, end].
+For counting process data, event indicates whether an event o}
 
 \item{status}{variable specifying if event occured or data has been censored.}
 
@@ -32,7 +38,9 @@ or censoring.}
 
 \item{p.thres}{pvalue threshold for backwards selection model.}
 
-\item{footnote}{character string passed on to \code{tfoot} argument of \code{htmlTable}}
+\item{footnote}{character string passed on to \code{tfoot} argument of \code{htmlTable} or \code{add_footer_lines} of \code{flextable}}
+
+\item{output}{string specifying the type of output. Allowed values are "html" generating a htmlTable, "flex" generating a flextable or "df" returning a data.frame}
 
 \item{...}{additional arguments to be passed on to \code{cox_table_combined}}
 }
