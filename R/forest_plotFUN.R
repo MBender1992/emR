@@ -15,7 +15,7 @@
 forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_size, fontsize, line_size, vjust_text, noDigits, ylim, varnames){
 
   # set variable names which can be a function to NULL
-  conf.high <- conf.low <- estimate <- var <-  NULL
+  conf.high <- conf.low <- estimate <- var <- shape <-  NULL
 
   if(!is.null(varnames)) toShow$var <- stri_replace_all_fixed(toShow$var, pattern = vars, replacement = varnames, vectorize_all = FALSE)
   toShowExp <- toShow[, 5:7]
@@ -39,6 +39,7 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_s
   toShowExpClean$estimateCI <- paste(toShowExpClean$estimate.1,  toShowExpClean$ci)
   toShowExpClean <- toShowExpClean[nrow(toShowExpClean):1,]
   toShowExpClean$estimate <- ifelse(toShowExpClean$estimate == 0, NA, toShowExpClean$estimate)
+  toShowExpClean$shape <- ifelse(toShowExpClean$var == "Overall", "total", "subgroup")
   rangeb <- range(toShowExpClean$conf.low, toShowExpClean$conf.high,   na.rm = TRUE)
   if(is.null(y_breaks)) breaks <- grDevices::axisTicks(rangeb/2, log = TRUE, nint = 7) else breaks <- y_breaks
   rangeplot <- rangeb
@@ -68,7 +69,10 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_s
     # color of the rectangles
     scale_fill_manual(values = c("#FFFFFF33", "grey95"), guide = "none") +
     geom_errorbar(aes(ymin = exp(conf.low), ymax = exp(conf.high)), size = line_size, width = 0) +
-    geom_point(pch = 16, size = point_size, color = "#009AA6") +
+    geom_point(aes(pch = shape, size = shape, color = shape)) +
+    scale_shape_manual(values = c(16,18)) +
+    scale_size_manual(values = c(point_size, point_size*2)) +
+    scale_color_manual(values = c("#009AA6", "#001B89")) +
     geom_hline(yintercept = 1, linetype = 2) + coord_flip(ylim = exp(rangeplot)) +
     ggtitle(main) +
     theme_light() +
@@ -102,7 +106,3 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_s
   gt$layout$clip[gt$layout$name == "panel"] <- "off"
   ggpubr::as_ggplot(gt)
 }
-
-
-
-

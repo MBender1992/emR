@@ -22,10 +22,10 @@ table1_pval <- function(data, strat, vars, footnote = NULL, html = TRUE, white.a
       y <- data[[name]]
       ind <- !is.na(y)
       y <- y[ind]
-      aov_formula <- as.formula(paste(name, strat, sep = "~"))
+      kw_formula <- as.formula(paste(name, strat, sep = "~"))
       s <- rep("", length(render.default(x=y, name=name, ...)))
       if (is.numeric(y)) {
-        p <- suppressWarnings(rstatix::anova_test(data, formula = aov_formula, white.adjust = white.adjust)$p)
+        p <- suppressWarnings(rstatix::anova_test(data, formula = kw_formula)$p)
       } else {
         p <- chisq.test(table(y, droplevels(data[[strat]][ind])))$p.value
       }

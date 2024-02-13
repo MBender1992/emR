@@ -66,7 +66,6 @@ survplot_eumelareg <-
             merge = FALSE,
             palette = "jco",
             extract.legend = FALSE,
-            return.fit = FALSE,
             ...)
   {
     ## data preprocessing, filter out data with missing values of the target variable and assign legend labels based on factor levels
@@ -99,7 +98,7 @@ survplot_eumelareg <-
       risk.table.title <- ""
       table.height <- 1 - plot.height + 0.05
     }
-
+    
     ## fit survival
     if (!is.null(var)) {
       fit <-
@@ -109,6 +108,7 @@ survplot_eumelareg <-
           weights = weights,
           conf.type = conf.type
         )
+      
       if (!is.null(weights)) {
         fit_table <-
           surv_fit(
@@ -121,7 +121,7 @@ survplot_eumelareg <-
       } else {
         fit_table <- fit
       }
-
+      
     } else {
       fit <-
         surv_fit(
@@ -133,7 +133,7 @@ survplot_eumelareg <-
       fit_table <- fit
       pval <- FALSE
     }
-
+    
     ## plot survival curve
     ggsurv <- ggsurvplot(
       fit,
@@ -158,12 +158,12 @@ survplot_eumelareg <-
       pval.coord = pval.coord,
       ...
     )
-
+    
     ## adjust survival curve position
     ggsurv$plot <-
       ggsurv$plot + theme(legend.position = legend.position,
                           plot.margin = unit(c(5.5, 5.5, 5.5, plot.margin.left), "points"))
-
+    
     # calculate and display propensity score weighted pvalue
     if (!is.null(weights)) {
       dat_logrank <- data[!is.na(data[[time]])]
@@ -172,7 +172,7 @@ survplot_eumelareg <-
                            dat_logrank[[status]],
                            ifelse(dat_logrank[[var]] == levels(dat_logrank[[var]])[1], 0, 1),
                            weights[!is.na(data[[time]])])$p.value
-
+      
       if (pval.ipsw < 0.0001) {
         pval.ipsw <- "< 0.0001"
         xjust <- 2.8 * (text.size + 1) / 12
@@ -194,9 +194,9 @@ survplot_eumelareg <-
           label = plabel,
           size = text.size / 2.835
         )
-
+      
     }
-
+    
     ## draw risk table and remove unnecessary lines and text
     risk_table <-
       ggrisktable(
@@ -220,7 +220,7 @@ survplot_eumelareg <-
         axis.ticks.x = element_blank(),
         plot.title = element_text(face = "bold", size = text.size)
       )
-
+    
     ## calculate median survival and draw as table
     if (!is.null(var)) {
       surv_med <- surv_median(fit)
@@ -231,7 +231,7 @@ survplot_eumelareg <-
       } else {
         tbl <- as.data.frame(table(data[!is.na(data[[time]]), var]))
       }
-
+      
       tbl$median <- sapply(1:length(surv_med$median), function(x) {
         paste(
           round(surv_med$median[x], 2),
@@ -248,9 +248,9 @@ survplot_eumelareg <-
       colnames(tbl) <- c("No. of patients", "Median  (95% CI)")
       tblGrob <-
         gridExtra::tableGrob(tbl, theme = gridExtra::ttheme_minimal())
-
+      
     }
-
+    
     if (!is.null(var)) {
       lndmrk <- lapply(landmarks, function(t) {
         survival_time(
@@ -265,7 +265,7 @@ survplot_eumelareg <-
       lndmrkGrob <-
         gridExtra::tableGrob(lndmrk, theme = gridExtra::ttheme_minimal())
     }
-
+    
     ## define blank plot to adjust the ggarrange panel
     blankPlot <-
       ggplot() + geom_blank(aes(1, 1)) + theme(
@@ -281,8 +281,8 @@ survplot_eumelareg <-
         axis.ticks = element_blank(),
         axis.line = element_blank()
       )
-
-
+    
+    
     # arrange survplot and survtable
     p1 <- cowplot::ggdraw() +
       cowplot::draw_plot(
@@ -299,27 +299,23 @@ survplot_eumelareg <-
         width = plot.width,
         height = plot.height
       )
-
+    
     # functionality to only extract the legend of the plot
     if (extract.legend == TRUE) {
       legend <- ggpubr::get_legend(ggsurv$plot)
       return(legend)
     }
-
+    
     # arrange survplot+table with median survival table
-    if(return.fit == TRUE){
-      return(fit)
-    } else {
-      if (!is.null(var)) {
-        p2 <- ggpubr::ggarrange(tblGrob, lndmrkGrob, blankPlot, nrow = 3)
-        if (merge == TRUE) {
-          ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
-        }
-        else {
-          list(plot = p1, table = ggpubr::ggarrange(tblGrob))
-        }
-      } else {
-        return(p1)
+    if (!is.null(var)) {
+      p2 <- ggpubr::ggarrange(tblGrob, lndmrkGrob, blankPlot, nrow = 3)
+      if (merge == TRUE) {
+        ggpubr::ggarrange(p1, p2, ncol = 2, widths = c(2, 1))
       }
+      else {
+        list(plot = p1, table = ggpubr::ggarrange(tblGrob))
+      }
+    } else {
+      return(p1)
     }
   }
