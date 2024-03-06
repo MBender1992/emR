@@ -30,7 +30,9 @@
 #' Should be given in the same order as those strata.
 #' @param legend.position he position of legends ("none", "left", "right", "bottom", "top", or two-element numeric vector)
 #' @param legend.title name of legend title.
+#' @param show.pval logical indicating whether pvalue should be displayed.
 #' @param pval.coord coords of pvalue within plot.
+#' @param return.fit logical indicating whether the fit object should be returned instead of the plot
 #' @param weights character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.
 #' @param extract.legend logical indicating whether only the legend should be extracted from the plot to build manual arrangements of plots and legend with [ggarrange()]
 #' @details Further arguments can be obtained from the [ggsurvplot()] function.
@@ -61,7 +63,7 @@ survplot_eumelareg <-
             legend.position = "top",
             legend.title = "",
             legend.labs = NULL,
-            pval = TRUE,
+            show.pval = TRUE,
             pval.coord = c(1, 0.1),
             merge = FALSE,
             palette = "jco",
@@ -134,6 +136,13 @@ survplot_eumelareg <-
       pval <- FALSE
     }
 
+    if(show.pval == FALSE){
+      pval <- FALSE
+    } else if(show.pval == TRUE & is.null(weights)){
+      pval <- TRUE
+    } else {
+      pval <- FALSE
+    }
     ## plot survival curve
     ggsurv <- ggsurvplot(
       fit,
@@ -180,21 +189,23 @@ survplot_eumelareg <-
       } else if (pval.ipsw < 0.001 & pval.ipsw >= 0.0001) {
         pval.ipsw <- format(pval.ipsw, scientific = F, digits = 1)
         xjust <- 2.8 * (text.size + 1) / 12
-        plabel <- paste("p = ", pval, sep = "")
+        plabel <- paste("p = ", pval.ipsw, sep = "")
       } else {
         pval.ipsw <- round(pval.ipsw, 3)
         xjust <- 2.4 * (text.size + 1) / 12
         plabel <- paste("p = ", pval.ipsw, sep = "")
       }
-      ggsurv$plot <-
-        ggsurv$plot + annotate(
-          geom = "text",
-          x = pval.coord[1] + xjust,
-          y = pval.coord[2],
-          label = plabel,
-          size = text.size / 2.835
-        )
 
+      if(show.pval == TRUE){
+        ggsurv$plot <-
+          ggsurv$plot + annotate(
+            geom = "text",
+            x = pval.coord[1] + xjust,
+            y = pval.coord[2],
+            label = plabel,
+            size = text.size / 2.835
+          )
+      }
     }
 
     ## draw risk table and remove unnecessary lines and text

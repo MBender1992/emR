@@ -49,7 +49,9 @@ table1_pval <- function(data, strat, vars, footnote = NULL, html = TRUE, white.a
   data[[strat]] <- factor(data[[strat]], levels = c(levels(data[[strat]]),2) , labels = c(levels(data[[strat]]),"P-value"))
 
   formula <- as.formula(paste("~", paste(vars, collapse = "+")  , "|", strat))
-  table1(formula, data, droplevels = F, render=rndr, render.missing = NULL, render.strat=rndr.strat, footnote=footnote, ...)
+  table1(formula, data, droplevels = F, render=rndr,
+         #render.missing = NULL,
+         render.strat=rndr.strat, footnote=footnote, ...)
 
 }
 

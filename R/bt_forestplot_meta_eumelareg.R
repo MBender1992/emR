@@ -34,8 +34,7 @@ bt_forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, 
     cox_formula <- as.formula(paste("Surv(", time, ", ", status,") ~ ",meta.group, "+", paste(vars, collapse = "+"), sep = ""))
     fit_total <- coxph(cox_formula, weights = data[["weights_cox"]], data = data)
     df_total <- as.data.frame(broom::tidy(fit_total, conf.int = TRUE))
-    # perform bootstrapping
-    set.seed(10)
+    perform bootstrapping
     bt_fit <- pbapply::pbreplicate(n = n.boot, {
       dat_boot <- data[sample(nrow(data), size = n.sample, replace=T), ]
       surv <- coxph(cox_formula, data = dat_boot)
