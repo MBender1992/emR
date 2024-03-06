@@ -12,6 +12,7 @@
 #' @importFrom grDevices dev.off png
 #' @importFrom utils combn write.csv2
 #' @importFrom stringi stri_replace_all_fixed
+#' @importFrom matrixStats rowQuantiles
 NULL
 
 
