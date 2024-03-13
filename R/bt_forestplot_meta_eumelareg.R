@@ -21,38 +21,39 @@
 #' @export
 
 bt_forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL,
-                                       main = "Hazard ratio for disease progression or death (95% CI)",
-                                       y_breaks = NULL, cpositions = c(0, 0.1, 0.3), refLabel =  "reference",
-                                       point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
-                                       n.boot = 10000, n.sample = nrow(data),  varnames = NULL, ylim = NULL){
+                                          main = "Hazard ratio for disease progression or death (95% CI)",
+                                          y_breaks = NULL, cpositions = c(0, 0.1, 0.3), refLabel =  "reference",
+                                          point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
+                                          n.boot = 10000, n.sample = nrow(data),  varnames = NULL, ylim = NULL){
 
-    if(!is.null(weights))  data$weights_cox <- weights
-    ls <- lapply(vars, bt_coxph_meta_analysis, data = data, time = time, weights = "weights_cox",
-                 status = status, vars = vars, meta.group = meta.group,
-                 univariate = univariate, n.boot = n.boot, n.sample = n.sample)
+  if(!is.null(weights))  data$weights_cox <- weights
+  ls <- lapply(vars, bt_coxph_meta_analysis, data = data, time = time, weights = "weights_cox",
+               status = status, vars = vars, meta.group = meta.group,
+               univariate = univariate, n.boot = n.boot, n.sample = n.sample)
 
-    cox_formula <- as.formula(paste("Surv(", time, ", ", status,") ~ ",meta.group, "+", paste(vars, collapse = "+"), sep = ""))
-    fit_total <- coxph(cox_formula, weights = data[["weights_cox"]], data = data)
-    df_total <- as.data.frame(broom::tidy(fit_total, conf.int = TRUE))
-    perform bootstrapping
-    bt_fit <- pbapply::pbreplicate(n = n.boot, {
-      dat_boot <- data[sample(nrow(data), size = n.sample, replace=T), ]
-      surv <- coxph(cox_formula, data = dat_boot)
-      surv$coefficients
-    })
+  cox_formula <- as.formula(paste("Surv(", time, ", ", status,") ~ ",meta.group, "+", paste(vars, collapse = "+"), sep = ""))
+  fit_total <- coxph(cox_formula, weights = data[["weights_cox"]], data = data)
+  df_total <- as.data.frame(broom::tidy(fit_total, conf.int = TRUE))
+  # perform bootstrapping
+  bt_fit <- pbapply::pbreplicate(n = n.boot, {
+    dat_boot <- data[sample(nrow(data), size = n.sample, replace=T), ]
+    surv <- coxph(cox_formula, data = dat_boot)
+    surv$coefficients
+  })
 
-    # convert to df and format dataframe
-    bt_df <- data.frame(matrixStats::rowQuantiles(bt_fit, probs = c(0.025, 0.5, 0.975)))
-    colnames(bt_df) <- c("conf.low", "estimate", "conf.high")
-    df_total$conf.low <- bt_df$conf.low
-    df_total$conf.high <- bt_df$conf.high
-    df_total$estimate <- bt_df$estimate
-    df_total$p.value <- sapply(1: nrow(df_total), function(i) ci_pval(est = df_total[i,]$estimate, l = df_total[i,]$conf.low, u = df_total[i,]$conf.high, log.trans = FALSE))
-    df_total <- df_total[stringr::str_detect(df_total$term, meta.group),]
-    df_total$var <- "Overall"
-    df_total$level <- ""
-    df_total$N <- dim(data)[1]
-    rownames(df_total) <- "Overall HR"
+  # convert to df and format dataframe
+  if(is.list(bt_fit)) bt_fit <- t(do.call(rbind, bt_fit))
+  bt_df <- data.frame(matrixStats::rowQuantiles(bt_fit, probs = c(0.025, 0.5, 0.975), na.rm = TRUE))
+  colnames(bt_df) <- c("conf.low", "estimate", "conf.high")
+  df_total$conf.low <- bt_df$conf.low
+  df_total$conf.high <- bt_df$conf.high
+  df_total$estimate <- bt_df$estimate
+  df_total$p.value <- sapply(1: nrow(df_total), function(i) ci_pval(est = df_total[i,]$estimate, l = df_total[i,]$conf.low, u =     df_total[i,]$conf.high, log.trans = FALSE))
+  df_total <- df_total[stringr::str_detect(df_total$term, meta.group),]
+  df_total$var <- "Overall"
+  df_total$level <- ""
+  df_total$N <- dim(data)[1]
+  rownames(df_total) <- "Overall HR"
 
   toShow <- lapply(1:length(ls), function(x) {
     toShow <- if(is.data.frame(ls[[x]][[1]]))  do.call(rbind, ls[[x]])  else ls[[x]]
@@ -68,7 +69,6 @@ bt_forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, 
   # plot the Forestplot
   forest_plotFUN(toShow = toShow, main = main,  y_breaks = y_breaks, cpositions = cpositions, point_size = point_size, varnames = varnames,
                  fontsize = fontsize, line_size = line_size, vjust_text = vjust_text, refLabel = refLabel, noDigits = noDigits, ylim =ylim)
-
 }
 
 

@@ -14,6 +14,7 @@ forestplot_meta_eumelareg(
   weights = NULL,
   imputation = FALSE,
   main = "Hazard ratio for disease progression or death (95\% CI)",
+  na.rm = FALSE,
   y_breaks = NULL,
   cpositions = c(0, 0.1, 0.3),
   impIter = 25,
@@ -46,6 +47,8 @@ or censoring.}
 \item{imputation}{Logical variable specifying whether missing should be replaced by multiple imputation}
 
 \item{main}{title of the plot.}
+
+\item{na.rm}{logical indicating whether missing values (Specified as "missing" or "Missing") should be removed}
 
 \item{y_breaks}{argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.}
 
