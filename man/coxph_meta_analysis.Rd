@@ -13,6 +13,7 @@ coxph_meta_analysis(
   meta.group,
   weights = NULL,
   univariate = FALSE,
+  na.rm = FALSE,
   ...
 )
 }
@@ -34,6 +35,8 @@ or censoring.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 cox regression is printed. Default is FALSE.}
+
+\item{na.rm}{logical indicating whether missing values (Specified as "missing" or "Missing") should be removed}
 
 \item{...}{additional arguments passed on to coxph}
 }

@@ -10,6 +10,7 @@
 #' @param meta.group variable for which meta analysis should be conducted. Usually the outcome of interest (e.g. treatment).
 #' @param univariate Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate
 #' @param varnames Character vector specifying rownames of the table (empty columns should be named with "").
+#' @param na.rm logical indicating whether missing values (Specified as "missing" or "Missing") should be removed
 #' @param point_size Size of mean points.
 #' @param line_size Size of errorbar line.
 #' @param weights Logical variable specifying whether inverse propensity score weighting should be applied.
@@ -21,7 +22,7 @@
 #' @export
 
 forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, univariate = TRUE, weights = NULL, imputation = FALSE,
-                                       main = "Hazard ratio for disease progression or death (95% CI)",
+                                       main = "Hazard ratio for disease progression or death (95% CI)", na.rm = FALSE,
                                        y_breaks = NULL, cpositions = c(0, 0.1, 0.3), impIter = 25, refLabel =  "reference",
                                        point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
@@ -36,7 +37,7 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
       #data$weights_cox <- NULL
     #} remove the comment if function throws error
     ls <- lapply(vars, coxph_meta_analysis, data = data, time = time, weights = "weights_cox",
-                 status = status, vars = vars, meta.group = meta.group,
+                 status = status, vars = vars, meta.group = meta.group, na.rm = na.rm,
                  univariate = univariate)
     fit_total <- coxph(as.formula(paste("Surv(", time, ", ", status,") ~ ",meta.group, "+", paste(vars, collapse = "+"), sep = "")), weights = data[["weights_cox"]], data = data)
     df_total <- as.data.frame(broom::tidy(fit_total, conf.int = TRUE))
