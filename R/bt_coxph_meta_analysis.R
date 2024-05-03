@@ -19,6 +19,7 @@
 bt_coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weights = NULL,
                                    univariate = FALSE, n.boot = 10000, n.sample = nrow(data), ...){
   vars_input <- NULL
+  warning("This function is outdated. The correct function is included in the Remission script.")
   if (!is.factor(data[[meta.group]]))
     stop("Grouping variable has to be a factor.")
   if (length(levels(data[[meta.group]])) != 2)
