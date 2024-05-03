@@ -12,7 +12,8 @@
 #' @export
 
 
-forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_size, fontsize, line_size, vjust_text, noDigits, ylim, varnames){
+forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_size, fontsize, line_size,
+                           vjust_text, noDigits, ylim, varnames){
 
   # set variable names which can be a function to NULL
   conf.high <- conf.low <- estimate <- var <- shape <-  NULL
@@ -95,6 +96,7 @@ forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_s
              label = toShowExpClean$estimateCI, size = annot_size_mm) +
     annotate(geom = "text", x = x_annotate, y = if (!is.null(ylim))   ylim[2] - 0.4 * ylim[2]  else exp(y_stars),
              label = toShowExpClean$stars, size = annot_size_mm,   hjust = -0.2, fontface = "italic")
+
 
   if (!is.null(y_breaks)) {
     p <- p + scale_y_log10(name = "", expand = c(0.02,  0.02), breaks = breaks)

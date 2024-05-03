@@ -161,6 +161,7 @@ survplot_eumelareg <-
       font.x = text.size,
       font.y = text.size,
       font.legend = text.size,
+      font.title = text.size,
       legend.labs = legend.labs,
       legend.title = legend.title,
       palette = palette,
@@ -213,24 +214,33 @@ survplot_eumelareg <-
       ggrisktable(
         fit_table,
         data = data,
-        risk.table.title = risk.table.title,
-        xlim = c(0, xlim[2] - 1),
         fontsize = text.size / 2.835,
+        xlim = c(0, xlim[2] - 1),
         break.time.by = break.time.by,
-        # size/2.835 from points to mm
+        risk.table.title = risk.table.title,
         legend.labs = legend.labs.risk.table,
-        ...
-      ) +
-      theme(
-        axis.line.y = element_blank(),
-        axis.title.y = element_blank(),
-        axis.ticks.y = element_blank(),
-        axis.line.x = element_blank(),
-        axis.text.x = element_blank(),
-        axis.title.x = element_blank(),
-        axis.ticks.x = element_blank(),
-        plot.title = element_text(face = "bold", size = text.size)
+        color = "black",
+        y.text = T,
+        ylab = "",
+        xlab = "",
+        tables.theme = theme_cleantable(),
+        font.tickslab = c(text.size)
       )
+      # ggrisktable(
+      #   fit_table,
+      #   data = data,
+      #   risk.table.title = risk.table.title,
+      #   xlim = c(0, xlim[2] - 1),
+      #   fontsize = text.size / 2.835,
+      #   break.time.by = break.time.by,
+      #   # size/2.835 from points to mm
+      #   legend.labs = legend.labs.risk.table,
+      #   color = "black",
+      #   y.text = T,   ylab = "",  xlab = "",
+      #   font.tickslab = c(text.size)#,
+      #   #...
+      # ) +
+
 
     ## calculate median survival and draw as table
     if (!is.null(var)) {

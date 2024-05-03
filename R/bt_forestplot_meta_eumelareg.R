@@ -26,6 +26,7 @@ bt_forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, 
                                           point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
                                           n.boot = 10000, n.sample = nrow(data),  varnames = NULL, ylim = NULL){
 
+  warning("This function is outdated. The correct function is included in the Remission script.")
   if(!is.null(weights))  data$weights_cox <- weights
   ls <- lapply(vars, bt_coxph_meta_analysis, data = data, time = time, weights = "weights_cox",
                status = status, vars = vars, meta.group = meta.group,
