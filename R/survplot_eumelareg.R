@@ -19,6 +19,7 @@
 #' @param conf.type Method to calculate confidence intervals. Log-log method is the default in SAS.
 #' @param text.size size of plot text.
 #' @param risk.table.width relative width of the risk table.
+#' @param color.table.title logical value. If TRUE table will be colored in the same values as the graph. Default is TRUE.
 #' @param merge logical value. If TRUE survival curve and median survival table are plotted in the same graph. Else
 #' two separate figures are generated. Default is FALSE.
 #' @param plot.width relative width of the survival plot
@@ -51,6 +52,7 @@ survplot_eumelareg <-
             xlim = c(0, 48),
             ggtheme = theme_eumelareg_surv_plot(),
             tables.theme = theme_eumelareg_surv_table(),
+            color.table.title = TRUE,
             plot.width = 0.838,
             plot.height = 0.88,
             plot.margin.left = NULL,
@@ -226,20 +228,9 @@ survplot_eumelareg <-
         tables.theme = theme_cleantable(),
         font.tickslab = c(text.size)
       )
-      # ggrisktable(
-      #   fit_table,
-      #   data = data,
-      #   risk.table.title = risk.table.title,
-      #   xlim = c(0, xlim[2] - 1),
-      #   fontsize = text.size / 2.835,
-      #   break.time.by = break.time.by,
-      #   # size/2.835 from points to mm
-      #   legend.labs = legend.labs.risk.table,
-      #   color = "black",
-      #   y.text = T,   ylab = "",  xlab = "",
-      #   font.tickslab = c(text.size)#,
-      #   #...
-      # ) +
+    if(color.table.title == TRUE & !is.null(var)){
+      risk_table$theme$axis.text.y$colour <- rev(eval(parse(text = paste("ggsci::pal_", palette, "(palette = c('default'), alpha = 1)(", length(levels(data[[var]])), ")", sep = ""))))
+    }
 
 
     ## calculate median survival and draw as table

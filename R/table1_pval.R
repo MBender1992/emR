@@ -30,7 +30,7 @@ table1_pval <- function(data, strat, vars, footnote = NULL, html = TRUE, white.a
         p <- chisq.test(table(y, droplevels(data[[strat]][ind])))$p.value
       }
       if(html == TRUE){
-        s[2] <- sub("<", "&lt;", format.pval(p, digits=3, eps=0.001))
+        s[2] <- sub("<", "&lt;", format.pval(p, digits=3, eps=0.001), useBytes = TRUE)
       } else {
         s[2] <- format.pval(p, digits=3, eps=0.001)
       }
