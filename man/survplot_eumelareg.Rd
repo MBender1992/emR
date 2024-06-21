@@ -17,6 +17,7 @@ survplot_eumelareg(
   xlim = c(0, 48),
   ggtheme = theme_eumelareg_surv_plot(),
   tables.theme = theme_eumelareg_surv_table(),
+  color.table.title = TRUE,
   plot.width = 0.838,
   plot.height = 0.88,
   plot.margin.left = NULL,
@@ -63,6 +64,8 @@ or censoring.}
 \item{ggtheme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
 
 \item{tables.theme}{function, ggplot2 theme name. Default value is theme_eumelareg_surv_plot. Allowed values include ggplot2 official themes: see \code{theme}.}
+
+\item{color.table.title}{logical value. If TRUE table will be colored in the same values as the graph. Default is TRUE.}
 
 \item{plot.width}{relative width of the survival plot}
 
