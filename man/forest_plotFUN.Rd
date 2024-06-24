@@ -2,7 +2,7 @@
 % Please edit documentation in R/forest_plotFUN.R
 \name{forest_plotFUN}
 \alias{forest_plotFUN}
-\title{Base function to display a forestplot}
+\title{Helper function to display a forestplot}
 \usage{
 forest_plotFUN(
   toShow,

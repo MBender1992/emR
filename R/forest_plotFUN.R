@@ -1,4 +1,4 @@
-#' Base function to display a forestplot
+#' Helper function to display a forestplot
 #'
 #' This code generates a helper function used in the wrappers "forestplot_eumelareg" and "forestplot_meta_eumelareg".
 #' @inheritParams survminer::ggforest
@@ -10,7 +10,6 @@
 #' @param y_breaks argument to supply manual y_breaks as a numerical vector. Default is NULL and breaks are set automatically within the function.
 #' @param ylim argument to supply manual y limits as numerical vector of length 2. Default is NULL and limits are set automatically within the function.
 #' @export
-
 
 forest_plotFUN <- function(toShow, main, y_breaks, cpositions, refLabel, point_size, fontsize, line_size,
                            vjust_text, noDigits, ylim, varnames){
