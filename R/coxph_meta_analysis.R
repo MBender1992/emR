@@ -57,7 +57,6 @@ coxph_meta_analysis <- function(data, time, status, vars, var, meta.group, weigh
     df$level <- ""
     df$N <- dim(dat)[1]
     df
-
   }
 }
 

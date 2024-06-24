@@ -30,11 +30,25 @@ indicating censored data and 1 indicating event.}
 
 \item{statistics}{Logical value. If TRUE pvalue is printed. Default is TRUE. Statistical test is log-rank test.}
 
-\item{weights}{character variable specifying the name of the weights column. Weights have to be added to the original dataframe in order to be applied correctly.}
+\item{weights}{character variable specifying the name of the weights column. Weights (numerical vector) have to be added to the original dataframe in order to be applied correctly.}
 
-\item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS.}
+\item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS and was therefore set as the default here too.}
 }
 \description{
 This function fits a survival curve for each subgroup defined by var and extracts the median survival times.
 Additionally the median survival time for the whole sample is calculated.
+}
+\examples{
+# example survival calculation with the lung dataset
+df <- survival::lung
+add_median_survival(data = df, time = "time", status = "status", var = "ph.ecog")
+# calculate median survival with inverse propensity score weighting for sex
+df$sex <- factor(df$sex)
+df$ph.ecog <- ifelse(is.na(df$ph.ecog), "Missing", df$ph.ecog)
+df$ph.karno <- ifelse(is.na(df$ph.karno), "Missing", df$ph.karno)
+df$weights.ate <- ate_weights(data = df, vars = c("age", "ph.ecog", "ph.karno"), prop.var = "sex")
+# the internal logrank test (logrank_IPSW_RISCA) needs a status variable of 0 and 1
+df$status <- ifelse(df$status == 2, 1, 0)
+add_median_survival(data = df, time = "time", status = "status",
+var = "sex", weights = "weights.ate")
 }

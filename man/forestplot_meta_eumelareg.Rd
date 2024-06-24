@@ -42,7 +42,8 @@ or censoring.}
 
 \item{univariate}{Logical value. If TRUE output of univariate cox regression is printed. Else output of multivariate}
 
-\item{weights}{Logical variable specifying whether inverse propensity score weighting should be applied.}
+\item{weights}{variable providing weights for downstream coxph analysis. If imputation == TRUE weights will be calculated internally
+within the imputation call. Set weights == TRUE/FALSE, if using multiple imputation, otherwise provide vector with weights the same length as the data.frame.}
 
 \item{imputation}{Logical variable specifying whether missing should be replaced by multiple imputation}
 
