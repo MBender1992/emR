@@ -234,7 +234,7 @@ survplot_eumelareg <-
 
     if (color.table.title == TRUE & !is.null(var)) {
       if (any(stringr::str_detect(palette, "#"))) {
-        risk_table$theme$axis.text.y$colour <- palette
+        risk_table$theme$axis.text.y$colour <- rev(palette)
       } else {
         risk_table$theme$axis.text.y$colour <- rev(eval(parse(
           text = paste(
