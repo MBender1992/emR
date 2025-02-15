@@ -28,13 +28,15 @@ forestplot_meta_eumelareg <- function (data, time, status, vars, meta.group, uni
                                        point_size = 4, fontsize = 1,line_size = 0.9, vjust_text = 1.2, noDigits = 2,
                                        varnames = NULL, ylim = NULL){
 
-  if(imputation == FALSE & weights == FALSE){
-    stop("Weights are set as FALSE without an internal imputation. If no imputation step is desired please either specify weights as a numeric vector
+  if(!is.null(weights)){
+    if(imputation == FALSE & weights == FALSE){
+      stop("Weights are set as FALSE without an internal imputation. If no imputation step is desired please either specify weights as a numeric vector
          or set weights as NULL.")
-  }
-  if(imputation == FALSE & weights == TRUE){
-    warning("Weights == TRUE only works internally if multiple imputation is performed. The weights argument will be ignored if set to TRUE without imputation.
-            If specifying weights is desired please provide a numeric vector containing weights.")
+    }
+    if(imputation == FALSE & weights == TRUE){
+      warning("Weights == TRUE only works internally if multiple imputation is performed. The weights argument will be ignored if set to TRUE without imputation.
+            If specifying weights without imputation is desired please provide a numeric vector containing weights.")
+    }
   }
 
   if(imputation == TRUE){
