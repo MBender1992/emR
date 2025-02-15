@@ -228,10 +228,26 @@ survplot_eumelareg <-
         tables.theme = theme_cleantable(),
         font.tickslab = c(text.size)
       )
-    if(color.table.title == TRUE & !is.null(var)){
-      risk_table$theme$axis.text.y$colour <- rev(eval(parse(text = paste("ggsci::pal_", palette, "(palette = c('default'), alpha = 1)(", length(levels(data[[var]])), ")", sep = ""))))
-    }
+    # if(color.table.title == TRUE & !is.null(var)){
+    #   risk_table$theme$axis.text.y$colour <- rev(eval(parse(text = paste("ggsci::pal_", palette, "(palette = c('default'), alpha = 1)(", length(levels(data[[var]])), ")", sep = ""))))
+    # }
 
+    if (color.table.title == TRUE & !is.null(var)) {
+      if (any(stringr::str_detect(palette, "#"))) {
+        risk_table$theme$axis.text.y$colour <- palette
+      } else {
+        risk_table$theme$axis.text.y$colour <- rev(eval(parse(
+          text = paste(
+            "ggsci::pal_",
+            palette,
+            "(palette = c('default'), alpha = 1)(",
+            length(levels(data[[var]])),
+            ")",
+            sep = ""
+          )
+        )))
+      }
+    }
 
     ## calculate median survival and draw as table
     if (!is.null(var)) {

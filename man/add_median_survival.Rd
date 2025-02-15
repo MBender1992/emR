@@ -35,6 +35,8 @@ indicating censored data and 1 indicating event.}
 \item{conf.type}{Method to calculate confidence intervals. Log-log method is the default in SAS and was therefore set as the default here too.}
 }
 \description{
+Fitting a survival fit for each subgroup defined by var and extracting median survival times.
+Additionally the total survival time for the whole sample is calculated.
 This function fits a survival curve for each subgroup defined by var and extracts the median survival times.
 Additionally the median survival time for the whole sample is calculated.
 }
